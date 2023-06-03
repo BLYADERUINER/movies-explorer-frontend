@@ -1,0 +1,26 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__container {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.header__link {
+  color: #000000;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-decoration: none;
+}
+
+.header__button-link {
+  padding: 8px 20px;
+  border-radius: 3px;
+  background: #000000;
+  color: #ffffff;
+}
