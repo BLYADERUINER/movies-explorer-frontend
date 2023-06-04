@@ -1,17 +1,17 @@
-.header {
+.navigation {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 18px 70px 0;
 }
 
-.header__container {
+.navigation__container {
   display: flex;
   align-items: center;
   gap: 30px;
 }
 
-.header__link {
+.navigation__link {
   color: #000000;
   font-weight: 500;
   font-size: 12px;
@@ -19,13 +19,13 @@
   text-decoration: none;
 }
 
-.header__button-link {
+.navigation__button-link {
   padding: 8px 20px;
   border-radius: 3px;
   background: #000000;
   color: #ffffff;
 }
 
-.header_pink {
+.navigation_pink {
   background: #F3C1F8;
 }

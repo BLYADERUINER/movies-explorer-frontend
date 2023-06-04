@@ -2,15 +2,15 @@ import logo from '../../images/logo.svg';
 
 import './NavTab.css';
 
-function NavTab () {
+function NavTab() {
   return(
-    <header className="header header_pink">
-      <img className="header__logo" src={logo} height={38} width={38} alt="Логотип" />
-      <div className="header__container">
-        <a className="header__link" href=" ">Регистрация</a>
-        <a className="header__link header__button-link" href=" ">Войти</a>
+    <div className="navigation navigation_pink">
+      <img className="navigation__logo" src={logo} height={38} width={38} alt="Логотип" />
+      <div className="navigation__container">
+        <a className="navigation__link" href=" ">Регистрация</a>
+        <a className="navigation__link navigation__button-link" href=" ">Войти</a>
       </div>
-    </header>
+    </div>
   )
 }
 

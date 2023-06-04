@@ -1,11 +1,11 @@
-.promo {
+.header {
   display: flex;
   justify-content: space-between;
   padding: 75px 70px;
   background: #F3C1F8;
 }
 
-.promo__title {
+.header__title {
   max-width: 640px;
   font-style: normal;
   font-weight: 400;
@@ -14,7 +14,7 @@
   margin: 0;
 }
 
-.promo__text {
+.header__text {
   max-width: 310px;
   font-weight: 400;
   font-size: 13px;
@@ -23,7 +23,7 @@
   opacity: 0.5;
 }
 
-.promo__button {
+.header__button {
   cursor: pointer;
   background: transparent;
   font-weight: 500;
@@ -36,11 +36,11 @@
   transition: opacity 0.3s ease-in-out ;
 }
 
-.promo__button:hover {
+.header__button:hover {
   opacity: 0.6;
 }
 
-.promo__image {
+.header__image {
   width: 310px;
   height: 304px;
 }
