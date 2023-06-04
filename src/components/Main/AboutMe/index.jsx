@@ -19,7 +19,7 @@ function AboutMe() {
             На&nbsp;досуге люблю играть в&nbsp;игры и&nbsp;решать задачки.
           </p>
           <a
-            className="aboutme__link"
+            className="aboutme__link-git"
             href="https://github.com/BLYADERUINER"
             target="_blank"
             rel="noreferrer"

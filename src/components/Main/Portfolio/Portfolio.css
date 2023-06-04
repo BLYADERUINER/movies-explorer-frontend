@@ -25,6 +25,8 @@
   line-height: 50px;
   padding-bottom: 9px;
   border-bottom: 1px solid #E8E8E8;
+  text-decoration: none;
+  color: #000000;
 }
 
 .aboutme__link:last-child {
