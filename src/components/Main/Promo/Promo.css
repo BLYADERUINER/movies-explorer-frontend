@@ -1,7 +1,8 @@
 .promo {
   display: flex;
   justify-content: space-between;
-  padding: 75px 0;
+  padding: 75px 70px;
+  background: #F3C1F8;
 }
 
 .promo__title {

@@ -4,7 +4,7 @@ import './NavTab.css';
 
 function NavTab () {
   return(
-    <header className="header">
+    <header className="header header_pink">
       <img className="header__logo" src={logo} height={38} width={38} alt="Логотип" />
       <div className="header__container">
         <a className="header__link" href=" ">Регистрация</a>
