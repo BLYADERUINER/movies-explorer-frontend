@@ -1,0 +1,49 @@
+.aboutme {
+  padding: 110px 70px 125px;
+}
+
+.aboutme__block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 66px 0 0;
+}
+
+.aboutme__container {
+  max-width: 600px;
+}
+
+.aboutme__name {
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  margin: 0;
+}
+
+.aboutme__status {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  margin: 18px 0 0;
+}
+
+.aboutme__text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  margin: 26px 0 99px;
+}
+
+.aboutme__link {
+  color: #000000;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.aboutme__image {
+  width: 270px;
+  height: 327px;
+  border-radius: 10px;
+}
