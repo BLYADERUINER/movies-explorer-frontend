@@ -35,7 +35,7 @@ function NavTab({ logined }) {
             to="/saved-movies"
             exact="true"
           >
-            Сохранённые Фильмы
+            Сохранённые фильмы
           </NavLink>
         </div>
       )}

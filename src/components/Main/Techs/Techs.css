@@ -15,6 +15,7 @@
   font-weight: 400;
   font-size: 50px;
   line-height: 58px;
+  letter-spacing: -0.04em;
   margin: 0;
 }
 
@@ -23,6 +24,7 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
+  letter-spacing: -0.04em;
   text-align: center;
   margin: 0;
 }
@@ -34,6 +36,7 @@
   justify-content: center;
   gap: 10px;
   margin: 100px auto 0;
+  padding: 0;
 }
 
 .techs__list-item {
@@ -47,4 +50,6 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
+  text-align: center;
+  letter-spacing: -0.04em;
 }

@@ -26,6 +26,7 @@
   padding-bottom: 9px;
   border-bottom: 1px solid #E8E8E8;
   text-decoration: none;
+  letter-spacing: -0.04em;
   color: #000000;
 }
 
@@ -37,6 +38,6 @@
   background-image: url(../../../images/AboutMe/link-icon.svg);
   background-repeat: no-repeat;
   background-position: center;
-  width: 29px;
+  width: 30px;
   height: 60px;
 }

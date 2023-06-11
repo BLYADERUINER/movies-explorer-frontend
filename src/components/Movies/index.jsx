@@ -1,10 +1,14 @@
 import NavTab from '../NavTab';
+import SearchForm from './SearchForm';
 
 import './Movies.css';
 
 function Movies() {
   return(
-    <NavTab logined />
+    <div className='movies'>
+      <NavTab logined />
+      <SearchForm />
+    </div>
   )
 }
 
