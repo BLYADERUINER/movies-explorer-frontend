@@ -1,0 +1,31 @@
+.movies__list {
+  padding: 70px 70px 80px;
+}
+
+.movies__container {
+  display: grid;
+  justify-content: center;
+  grid-template-rows: repeat(auto-fit, minmax(auto, 271px));
+  grid-template-columns: repeat(auto-fit, minmax(auto, 364px));
+  column-gap: 24px;
+  row-gap: 30px;
+}
+
+.movies__button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 80px;
+}
+
+.movies__button-more {
+  background: transparent;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  border: 1px solid #E8E8E8;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 320px;
+  height: 36px;
+}
