@@ -89,6 +89,10 @@
   margin-top: 69px;
 }
 
+.authreg__button-signin {
+  margin-top: 157px;
+}
+
 .authreg__link-container {
   display: flex;
   justify-content: center;
@@ -112,4 +116,3 @@
   color: #000000;
   text-decoration: none;
 }
-

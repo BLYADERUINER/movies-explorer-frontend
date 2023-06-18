@@ -4,7 +4,8 @@ import Main from "../Main";
 import Movies from "../Movies";
 import SavedMovies from "../SavedMovies";
 import Profile from "../Profile";
-import Register from "../Register";
+import Register from "../AuthReg/Register";
+import Login from "../AuthReg/Login";
 
 import './App.css';
 
@@ -16,6 +17,7 @@ function App() {
       <Route path="/saved-movies" element={<SavedMovies />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/signup" element={<Register />} />
+      <Route path="/signin" element={<Login />} />
     </Routes>
   );
 }
