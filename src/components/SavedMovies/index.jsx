@@ -8,11 +8,11 @@ import './SavedMovies.css';
 function SavedMovies() {
   return(
     <div className='movies'>
-    <NavTab logined />
-    <SearchForm />
-    <MoviesCardList savedMovies />
-    <Footer />
-  </div>
+      <NavTab logined />
+      <SearchForm />
+      <MoviesCardList savedMovies />
+      <Footer />
+    </div>
   );
 }
 

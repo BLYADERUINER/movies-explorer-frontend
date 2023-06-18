@@ -41,7 +41,7 @@ function NavTab({ logined }) {
       )}
       <div className="navigation__container">
         {logined ? (
-          <NavLink className="navigation__profile-link" to=" ">
+          <NavLink className="navigation__profile-link" to="/profile">
             Аккаунт
             <img
               className="navigation__profile-icon"
@@ -55,13 +55,13 @@ function NavTab({ logined }) {
           <>
             <NavLink
               className="navigation__link"
-              to=" "
+              to="/signup"
             >
               Регистрация
             </NavLink>
             <NavLink
               className="navigation__link navigation__button-link"
-              to=" "
+              to="/signin"
             >
               Войти
             </NavLink>
