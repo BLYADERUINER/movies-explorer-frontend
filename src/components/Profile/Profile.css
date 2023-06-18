@@ -7,7 +7,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 74px 0 70px;
+  padding: 92px 0 70px;
 }
 
 .profile__user-info {
@@ -23,6 +23,7 @@
   font-size: 24px;
   line-height: 29px;
   text-align: center;
+  margin: 0;
 }
 
 .profile__input-container {
