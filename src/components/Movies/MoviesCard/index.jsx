@@ -13,7 +13,7 @@ function MoviesCard({ image, active }) {
       </div>
       <img className="movies__image" src={image} alt="Картинка фильма" />
       {
-        location === "/movies" ?
+        location !== "/saved-movies" ?
           <button
             className={`movies__button-favorite
               ${active ? "movies__button-favorite_active" : ""

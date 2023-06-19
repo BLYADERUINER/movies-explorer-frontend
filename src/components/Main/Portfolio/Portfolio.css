@@ -42,7 +42,7 @@
   height: 60px;
 }
 
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 890px) {
   .aboutme__portfolio {
     margin-top: 90px;
   }

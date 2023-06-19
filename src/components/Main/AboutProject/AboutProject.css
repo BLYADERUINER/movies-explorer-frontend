@@ -68,7 +68,7 @@
   color: #a0a0a0;
 }
 
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 890px) {
   .abproject {
     padding: 90px 50px 121px;
   }

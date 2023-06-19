@@ -2,7 +2,7 @@
   padding: 80px 70px;
 }
 
-.movies__container {
+.movies__card-container {
   display: grid;
   justify-content: center;
   grid-template-rows: repeat(auto-fit, minmax(auto, 271px));
@@ -28,4 +28,17 @@
   cursor: pointer;
   width: 320px;
   height: 36px;
+}
+
+@media screen and (max-width: 890px) {
+  .movies__list {
+    padding: 80px 30px;
+  }
+
+  .movies__card-container {
+    grid-template-rows: repeat(auto-fill, minmax(auto, 258px));
+    grid-template-columns: repeat(auto-fill, minmax(auto, 339px));
+    column-gap: 30px;
+    row-gap: 36px;
+  }
 }

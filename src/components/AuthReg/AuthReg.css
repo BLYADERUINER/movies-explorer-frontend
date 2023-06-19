@@ -116,3 +116,9 @@
   color: #000000;
   text-decoration: none;
 }
+
+@media screen and (max-width: 890px) {
+  .authreg__container {
+    padding: 232px 0;
+  }
+}
