@@ -53,3 +53,30 @@
   text-align: center;
   letter-spacing: -0.04em;
 }
+
+@media screen and (max-width: 780px) {
+  .techs {
+    padding: 90px 50px;
+  }
+
+  .techs__container {
+    margin-top: 80px;
+    gap: 22px;
+  }
+
+  .techs__text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .techs__list {
+    margin-top: 83px;
+  }
+
+  .techs__list-item{
+    font-size: 12px;
+    line-height: 15px;
+    width: 84px;
+    height: 57px;
+  }
+}

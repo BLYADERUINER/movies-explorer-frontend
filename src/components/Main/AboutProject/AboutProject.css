@@ -7,11 +7,14 @@
   display: flex;
   flex-direction: row;
   padding: 70px 0 110px;
+  justify-content: space-between;
   gap: 40px;
 }
 
 .abproject__passed {
-  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
 }
 
 .abproject__title {
@@ -26,7 +29,7 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  margin: 26px 0 0;
+  margin: 0;
 }
 
 .abproject__container-line {
@@ -63,4 +66,24 @@
   position: absolute;
   bottom: -30px;
   color: #a0a0a0;
+}
+
+@media screen and (max-width: 780px) {
+  .abproject {
+    padding: 90px 50px 121px;
+  }
+
+  .abproject__container {
+    padding-bottom: 93px;
+    gap: 30px;
+  }
+
+  .abproject__passed {
+    gap: 22px;
+  }
+
+  .abproject__text {
+    font-size: 12px;
+    line-height: 18px;
+  }
 }

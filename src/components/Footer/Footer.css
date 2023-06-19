@@ -38,3 +38,9 @@
   line-height: 16px;
   color: #000000;
 }
+
+@media screen and (max-width: 780px) {
+  .footer {
+    padding: 79px 30px 20px;
+  }
+}

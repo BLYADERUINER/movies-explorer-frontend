@@ -7,6 +7,7 @@
   flex-direction: row;
   justify-content: space-between;
   padding: 66px 0 0;
+  gap: 49px;
 }
 
 .aboutme__container {
@@ -46,4 +47,36 @@
   width: 270px;
   height: 327px;
   border-radius: 10px;
+}
+
+@media screen and (max-width: 780px) {
+  .aboutme {
+    padding: 90px 50px 90px;
+  }
+  
+  .aboutme__container {
+    max-width: 364px;
+  }
+
+  .aboutme__name {
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  .aboutme__status {
+    font-size: 12px;
+    line-height: 18px;
+    margin-top: 16px;
+  }
+
+  .aboutme__text {
+    font-size: 12px;
+    line-height: 18px;
+    margin: 20px 0 87px;
+  }
+  
+  .aboutme__image {
+    width: 255px;
+    height: 307px;
+  }
 }

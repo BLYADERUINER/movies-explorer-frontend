@@ -41,3 +41,18 @@
   width: 30px;
   height: 60px;
 }
+
+@media screen and (max-width: 780px) {
+  .aboutme__portfolio {
+    margin-top: 90px;
+  }
+
+  .aboutme__link {
+    font-size: 28px;
+    line-height: 50px;
+  }
+
+  .aboutme__link-icon {
+    width: 27px;
+  }
+}
