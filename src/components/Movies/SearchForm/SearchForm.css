@@ -95,3 +95,22 @@
     padding: 98px 30px 0;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .search {
+    padding: 99px 14px 0;
+  }
+
+  .search__text {
+    font-size: 11px;
+  }
+  
+  .search__input {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .search__label {
+    padding: 44px 0;
+  }
+}

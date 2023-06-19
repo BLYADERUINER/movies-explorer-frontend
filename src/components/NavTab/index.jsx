@@ -20,21 +20,19 @@ function NavTab({ logined }) {
         isToggleBurgerButton ? "navigation_opened" : ""
       }`}
     >
-      <img
-        className="navigation__logo"
-        src={logo}
-        alt="Логотип"
-      />
-        <div className={`navigation__wrapper ${
+      <NavLink to="/">
+        <img className="navigation__logo" src={logo} alt="Логотип" />
+      </NavLink>
+      <div
+        className={`navigation__wrapper ${
           isToggleBurgerButton ? "navigation_wrapper_opened" : ""
-          }`} 
-          />
-      {
-        logined ?
+        }`}
+      />
+      {logined ? (
         <div className="navigation__container">
           <div className="navigation__films-container">
-          <NavLink
-              className='navigation__film-link navigation__home-link'
+            <NavLink
+              className="navigation__film-link navigation__home-link"
               to="/"
               exact="true"
             >
@@ -42,9 +40,7 @@ function NavTab({ logined }) {
             </NavLink>
             <NavLink
               className={(navdata) => `navigation__film-link
-                    ${
-                      navdata.isActive ? "navigation__film-link_active" : ""
-                    }`}
+                    ${navdata.isActive ? "navigation__film-link_active" : ""}`}
               to="/movies"
               exact="true"
             >
@@ -52,9 +48,7 @@ function NavTab({ logined }) {
             </NavLink>
             <NavLink
               className={(navdata) => `navigation__film-link
-                    ${
-                      navdata.isActive ? "navigation__film-link_active" : ""
-                    }`}
+                    ${navdata.isActive ? "navigation__film-link_active" : ""}`}
               to="/saved-movies"
               exact="true"
             >
@@ -74,7 +68,7 @@ function NavTab({ logined }) {
             </NavLink>
           </div>
         </div>
-      : 
+      ) : (
         <div className="navigation__authreg-container">
           <NavLink className="navigation__link" to="/signup">
             Регистрация
@@ -86,18 +80,17 @@ function NavTab({ logined }) {
             Войти
           </NavLink>
         </div>
-      }
-      {
-        logined &&
-          <button
-            className="navigation__burger-button"
-            onClick={handleToggleBurgerButton}
-          >
-            <span className="navigation__burger-span"></span>
-            <span className="navigation__burger-span"></span>
-            <span className="navigation__burger-span"></span>
-          </button>
-      }
+      )}
+      {logined && (
+        <button
+          className="navigation__burger-button"
+          onClick={handleToggleBurgerButton}
+        >
+          <span className="navigation__burger-span"></span>
+          <span className="navigation__burger-span"></span>
+          <span className="navigation__burger-span"></span>
+        </button>
+      )}
     </div>
   );
 }

@@ -50,3 +50,14 @@
     transform: translateY(0) rotate(-45deg);
   }
 }
+
+@media screen and (max-width: 890px) {
+  .navigation.navigation_opened .navigation__burger-button {
+    top: 15px;
+    right: 14px;
+  }
+
+  .navigation__burger-span {
+    width: 22px;
+  }
+}

@@ -144,7 +144,7 @@
 
 @media screen and (max-width: 550px) {
   .navigation {
-    padding: 18px 14px 0;
+    padding: 15px 14px 0;
   }
 
   .navigation__link {
@@ -158,5 +158,9 @@
 
   .navigation__authreg-container {
     gap: 14px;
+  }
+
+  .navigation__container {
+    width: 320px;
   }
 }

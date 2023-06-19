@@ -42,3 +42,19 @@
     row-gap: 36px;
   }
 }
+
+@media screen and (max-width: 890px) {
+  .movies__list {
+    padding: 50px 10px 80px;
+  }
+
+  .movies__card-container {
+    grid-template-rows: repeat(auto-fill, minmax(auto, 236px));
+    grid-template-columns: repeat(auto-fill, minmax(auto, 300px));
+    row-gap: 16px;
+  }
+
+  .movies__button-more {
+    width: 240px;
+  }
+}
