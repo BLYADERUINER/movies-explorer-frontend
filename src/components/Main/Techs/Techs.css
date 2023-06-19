@@ -80,3 +80,31 @@
     height: 57px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .techs {
+    padding: 70px 18px;
+  }
+
+  .techs__container {
+    margin-top: 60px;
+    gap: 24px;
+  }
+
+  .techs__title {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .techs__text {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .techs__list {
+    justify-content: flex-start;
+    width: 178px;
+    margin-top: 50px;
+    flex-wrap: wrap;
+  }
+}

@@ -44,3 +44,34 @@
     padding: 79px 30px 20px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .footer__container {
+    flex-direction: column-reverse;
+    align-items: center;
+    padding-top: 30px;
+  }
+
+  .footer__container-link {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .footer__link {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .footer__span {
+    margin-top: 30px;
+    font-size: 12px;
+    line-height: 15px;
+    color: #A0A0A0;
+  }
+
+  .footer__text {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

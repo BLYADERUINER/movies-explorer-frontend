@@ -76,3 +76,33 @@
     margin-top: 92px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .header {
+    padding: 88px 10px 30px;
+  }
+  
+  .header__image {
+    width: 210px;
+    height: 206px;
+  }
+
+  .header__title {
+    font-size: 30px;
+    line-height: 38px;
+    margin-top: 44px;
+    text-align: center; 
+  }
+
+  .header__text {
+    font-size: 13px;
+    line-height: 16px;
+    margin-top: 24px;
+  }
+
+  .header__button {
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 80px;
+  }
+}

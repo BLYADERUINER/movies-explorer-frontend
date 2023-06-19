@@ -87,3 +87,46 @@
     line-height: 18px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .abproject {
+    padding: 70px 18px 93px;
+  }
+
+  .abproject__container {
+    padding: 60px 0;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .abproject__passed {
+    gap: 16px;
+  }
+
+  .abproject__title {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .abproject__text {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .abproject__span {
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  .abproject__span-developed {
+    bottom: -26px;
+  }
+
+  .abproject__line-black {
+    width: 35%;
+  }
+
+  .abproject__line-grey {
+    width: 65%;
+  }
+}

@@ -5,7 +5,7 @@ import logo from "../../images/logo.svg";
 import iconProfile from "../../images/icon-profile.svg";
 
 import "./NavTab.css";
-import "./Burger.css";
+import "./BurgerMenu.css";
 
 function NavTab({ logined }) {
   const [isToggleBurgerButton, setToggleBurgerButton] = useState(false);
@@ -23,8 +23,6 @@ function NavTab({ logined }) {
       <img
         className="navigation__logo"
         src={logo}
-        height={38}
-        width={38}
         alt="Логотип"
       />
         <div className={`navigation__wrapper ${
