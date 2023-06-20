@@ -9,14 +9,16 @@ import './Main.css';
 
 function Main() {
   return (
-    <div className='main'>
+    <>
       <NavTab />
       <Promo />
-      <AboutProject />
-      <Techs />
-      <AboutMe />
+      <main className='main'>
+        <AboutProject />
+        <Techs />
+        <AboutMe />
+      </main>
       <Footer />
-    </div>
+    </>
   )
 }
 
