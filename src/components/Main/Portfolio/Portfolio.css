@@ -1,0 +1,85 @@
+.aboutme__portfolio {
+  margin: 100px 0 0;
+}
+
+.aboutme__span {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+  color: #A0A0A0;
+}
+
+.aboutme__portfolio-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 50px;
+}
+
+.aboutme__link {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 50px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #E8E8E8;
+  text-decoration: none;
+  letter-spacing: -0.04em;
+  color: #000000;
+}
+
+.aboutme__link:last-child {
+  border: none;
+}
+
+.aboutme__link-icon {
+  background-image: url(../../../images/AboutMe/link-icon.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 30px;
+  height: 60px;
+}
+
+@media screen and (max-width: 890px) {
+  .aboutme__portfolio {
+    margin-top: 90px;
+  }
+
+  .aboutme__link {
+    font-size: 28px;
+    line-height: 50px;
+  }
+
+  .aboutme__link-icon {
+    width: 27px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .aboutme__portfolio {
+    margin-top: 40px;
+  }
+
+  .aboutme__portfolio-container {
+    margin-top: 40px;
+  }
+
+  .aboutme__link {
+    font-size: 18px;
+    line-height: 28px;
+    padding-bottom: 19px;
+  }
+
+  .aboutme__link-icon{
+    width: 18px;
+    height: 28px;
+    background-size: 60%;
+  }
+
+  .aboutme__span {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

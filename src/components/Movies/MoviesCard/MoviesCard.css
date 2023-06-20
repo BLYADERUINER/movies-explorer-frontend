@@ -1,0 +1,65 @@
+.movies__card {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  background: #FDFDFD;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+.movies__container-text {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 14px 0 14px 14px;
+}
+
+.movies__name {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  margin: 0;
+}
+
+.movies__duration {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: #A0A0A0;
+}
+
+.movies__image {
+  width: 100%;
+  height: 100%;
+}
+
+.movies__button-favorite {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  background: url(../../../images/icon-favorite.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #f9f9f9;
+  border-radius: 36px;
+  border: none;
+  cursor: pointer;
+  top: 19px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+}
+
+.movies__button-favorite_active {
+  background: url(../../../images/icon-favorite-active.svg);
+  background-color: #000000;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.movies__button-remove {
+  background: url(../../../images/icon-remove.svg);
+  background-color: #F9F9F9;
+  background-repeat: no-repeat;
+  background-position: center;
+}
