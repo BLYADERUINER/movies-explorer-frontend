@@ -4,14 +4,15 @@ class MainApi {
     this._headers = options._headers;
   };
 
+  // метод проверки ответа от сервера
   _checkResponse(response){
     return response.ok
       ? response.json()
       : Promise.reject(`Ошибка: ${response.statusText}`);
   };
 
-  // получение фильмов
-  getMovies() {
+  // получение сохраненных фильмов
+  getLikedMovies() {
     return fetch(`${this._baseUrl}/movies}`, {
       method: 'GET',
       headers: this._headers,
@@ -21,7 +22,7 @@ class MainApi {
   };
 
   // создания избранного фильма
-  postMovie(movieData) {
+  postLikedMovie(movieData) {
     return fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
       headers: this._headers,
@@ -43,7 +44,7 @@ class MainApi {
 
   // получение инфы юзера
   getUserInfo() {
-    return fetch(`${this._headers}/users/me`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
       headers: this._headers,
       credentials: 'include',
@@ -53,7 +54,7 @@ class MainApi {
 
   // обновление инфы юзера
   patchUserInfo(userData) {
-    return fetch(`${this._headers}/users/me`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
       credentials: 'include',

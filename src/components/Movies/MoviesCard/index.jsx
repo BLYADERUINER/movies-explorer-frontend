@@ -2,22 +2,23 @@ import { useLocation } from "react-router-dom";
 
 import "./MoviesCard.css";
 
-function MoviesCard({ image, active }) {
+function MoviesCard({ movie }) {
   const location = useLocation().pathname;
+  
+  const durationHrs = Math.floor(movie.duration / 60);
+  const durationMin = movie.duration % 60;
 
   return (
     <div className="movies__card">
       <div className="movies__container-text">
-        <h3 className="movies__name">33 слова о дизайне</h3>
-        <span className="movies__duration">1ч 47м</span>
+        <h3 className="movies__name">{movie.nameRU}</h3>
+        <span className="movies__duration">{`${durationHrs}ч ${durationMin}м`}</span>
       </div>
-      <img className="movies__image" src={image} alt="Картинка фильма" />
+      <img className="movies__image" src={`https://api.nomoreparties.co/${movie.image.url}`} alt="Картинка фильма" />
       {
         location !== "/saved-movies" ?
           <button
-            className={`movies__button-favorite
-              ${active ? "movies__button-favorite_active" : ""
-            }`}
+            className={`movies__button-favorite`}
           />
         :
           <button className="movies__button-favorite movies__button-remove" />

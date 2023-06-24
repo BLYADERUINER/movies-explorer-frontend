@@ -5,12 +5,12 @@ import Footer from '../Footer';
 import './Movies.css';
 import MoviesCardList from './MoviesCardList';
 
-function Movies() {
+function Movies({ moviesData }) {
   return(
     <div className='movies'>
       <NavTab logined />
       <SearchForm />
-      <MoviesCardList />
+      <MoviesCardList movies={moviesData} />
       <Footer />
     </div>
   )
