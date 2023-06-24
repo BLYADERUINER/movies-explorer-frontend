@@ -5,7 +5,9 @@ class MainApi {
   };
 
   _checkResponse(response){
-    return response.ok ? response.json() : Promise.reject();
+    return response.ok
+      ? response.json()
+      : Promise.reject(`Ошибка: ${response.statusText}`);
   };
 
   // получение фильмов
@@ -60,3 +62,5 @@ class MainApi {
     .then(this._checkResponse)
   };
 };
+
+export default MainApi;
