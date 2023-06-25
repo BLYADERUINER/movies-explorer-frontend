@@ -16,8 +16,9 @@ import './App.css';
 function App() {
   const [movies, setMovies] = useState([]); // cтейт фильмов
   const [foundMovies, setFoundMovies] = useState([]); // стейт найденых фильмов
-  const [сheckbox, setCheckbox] = useState(false); // стейт чекбокса
-  const [searchInputValue, setSearchInputValue] = useState(''); // стейт инпута поиска
+  const [сheckbox, setCheckbox] = useState(false); // чекбокс поиска
+  const [searchInputValue, setSearchInputValue] = useState(''); // инпут поиска
+  // const [preloader, setPreloader] = useState(false); // прелоадер
 
   // ручка проверки фильмов
   function handleOnCheckFoundMovies() {

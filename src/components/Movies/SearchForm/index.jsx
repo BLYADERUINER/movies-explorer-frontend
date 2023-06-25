@@ -16,16 +16,16 @@ function SearchForm({
   const filterName = (name, searchName) => name.includes(searchName);
 
   // фунция фильтра фильма
-  const filterMovies = (searchValue, shortFilm) => {
+  const filterMovies = (moviesData, searchValue, shortFilm) => {
     const searchNameMovie = searchValue.toLowerCase(); // значение поиска
 
-    return movies.filter((movie) => {
+    return moviesData.filter((movie) => {
       let movieName = movie.nameRU.toLowerCase(); // значение фильма
 
       // если чекбокс истинный
       if (shortFilm) {
-        // возвращаем фильмы менее 50 мин и отфильтрованный по значению 
-        return movie.duration < 50 && filterName(movieName, searchNameMovie);
+        // возвращаем фильмы менее 40 мин и отфильтрованный по значению 
+        return movie.duration <= 40 && filterName(movieName, searchNameMovie);
       } else {
         return filterName(movieName, searchNameMovie);
       }
@@ -35,7 +35,7 @@ function SearchForm({
   // ручка поиска
   function handleOnSubmit(event) {
     event.preventDefault();
-    const searchResult = filterMovies(searchInputRef.current.value, searchCheckboxRef.current.checked);
+    const searchResult = filterMovies(movies, searchInputRef.current.value, searchCheckboxRef.current.checked);
 
     // записываем найденые значения
     handleFoundMoviesData(searchResult);
