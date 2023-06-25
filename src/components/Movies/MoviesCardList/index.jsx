@@ -2,17 +2,18 @@ import { useLocation } from "react-router-dom";
 
 import MoviesCard from "../MoviesCard";
 
-// Массив с фото
-// import { movies } from "../../../utils/movies";
-
 import "./MoviesCardList.css";
 
-function MoviesCardList({ movies }) {
+function MoviesCardList({ foundMovies }) {
   const location = useLocation().pathname;
 
   return (
     <section className="movies__list" aria-label="Секция с фильмами">
       <div className="movies__container">
+        { foundMovies.length === 0
+          && 
+          <h2 style={{textAlign: 'center', color: '#8D8D8D'}}>Ничего не найдено</h2>
+        }
         <div className="movies__card-container">
           {
             // location === '/saved-movies' ?
@@ -22,17 +23,21 @@ function MoviesCardList({ movies }) {
             //       <MoviesCard key={index} image={film.image} active={film.active} />
             //     ))
             // :
-                movies.map((filmData) => (
-                  <MoviesCard key={filmData.id} movie={filmData} />
-                ))
+            foundMovies.length > 0
+            && foundMovies.map((filmData) => (
+                <MoviesCard key={filmData.id} movie={filmData} />
+              ))
+            // : <h2 style={{textAlign: 'center', color: '#8D8D8D'}}>Ничего не найдено</h2>
           }
         </div>
-        <div className="movies__button-container">
-          {
-            location !== '/saved-movies' &&
+        {/* { foundMovies.length > 12 && 
+          <div className="movies__button-container">
+            {
+              location !== '/saved-movies' &&
               <button className="movies__button-more">Ещё</button>
-          }
-        </div>
+            }
+          </div>
+        } */}
       </div>
     </section>
   );

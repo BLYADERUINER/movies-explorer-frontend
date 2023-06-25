@@ -14,20 +14,59 @@ import NotFound from "../NotFound";
 import './App.css';
 
 function App() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState([]); // cтейт фильмов
+  const [foundMovies, setFoundMovies] = useState([]); // стейт найденых фильмов
+  const [сheckbox, setCheckbox] = useState(false); // стейт чекбокса
+  const [searchInputValue, setSearchInputValue] = useState(''); // стейт инпута поиска
 
+  // ручка проверки фильмов
+  function handleOnCheckFoundMovies() {
+    const foundFilmsData = localStorage.getItem('foundmovies');
+
+    // проверяем есть ли локалке данные
+    if (!foundFilmsData) {
+      return;
+    } else {
+      // парсим полученые данные
+      const foundData = JSON.parse(foundFilmsData);
+
+      // раскидываем по стейтам
+      setFoundMovies(foundData.movies);
+      setCheckbox(foundData.checkboxValue);
+      setSearchInputValue(foundData.inputValue);
+    }
+  }
+
+  // получение всех фильмов
   useEffect(() => {
     moviesApi.getMovies()
     .then((moviesData) => {
       setMovies(moviesData);
     })
     .catch((error) => console.log(error));
+  }, [setMovies]);
+
+  // получение фильмов из локалки
+  useEffect(() => {
+    handleOnCheckFoundMovies();
   }, []);
 
   return (
     <Routes>
       <Route path="/" element={<Main />} />
-      <Route path="/movies" element={<Movies moviesData={movies} />} />
+      <Route
+        path="/movies"
+        element={
+          <Movies
+            moviesData={movies}
+            foundMoviesData={foundMovies}
+            searchCheckboxValue={сheckbox}
+            searchInputValue={searchInputValue}
+            handleFoundMoviesData={setFoundMovies}
+            handleSearchInputValue={setSearchInputValue}
+            handleSearchCheckboxValue={setCheckbox}
+          />}
+      />
       <Route path="/saved-movies" element={<SavedMovies />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/signup" element={<Register />} />

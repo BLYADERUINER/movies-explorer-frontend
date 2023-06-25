@@ -10,7 +10,7 @@ function SavedMovies() {
     <div className='movies'>
       <NavTab logined />
       <SearchForm />
-      <MoviesCardList savedMovies />
+      <MoviesCardList />
       <Footer />
     </div>
   );
