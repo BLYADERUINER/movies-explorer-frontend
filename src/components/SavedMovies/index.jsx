@@ -5,12 +5,15 @@ import Footer from '../Footer';
 
 import './SavedMovies.css';
 
-function SavedMovies() {
+function SavedMovies({ movies, handleDeleteMovie }) {
   return(
     <div className='movies'>
       <NavTab logined />
       <SearchForm />
-      <MoviesCardList />
+      <MoviesCardList
+        movies={movies}
+        deleteMovie={handleDeleteMovie}
+      />
       <Footer />
     </div>
   );

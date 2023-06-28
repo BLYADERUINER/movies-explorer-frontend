@@ -7,12 +7,14 @@ import './Movies.css';
 
 function Movies({
   moviesData,
+  savedMoviesData,
   foundMoviesData,
   handleFoundMoviesData,
   searchInputValue,
   searchCheckboxValue,
   handleSearchInputValue,
   handleSearchCheckboxValue,
+  handleDeleteMovie,
   saveMovie,
 }) {
   return(
@@ -27,8 +29,10 @@ function Movies({
         handleSearchCheckboxValue={handleSearchCheckboxValue}
       />
       <MoviesCardList
-        foundMovies={foundMoviesData}
+        movies={foundMoviesData}
+        savedMovies={savedMoviesData}
         saveMovie={saveMovie}
+        deleteMovie={handleDeleteMovie}
       />
       <Footer />
     </div>

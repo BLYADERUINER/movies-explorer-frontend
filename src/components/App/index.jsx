@@ -19,7 +19,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [movies, setMovies] = useState([]); // cтейт фильмов
   const [foundMovies, setFoundMovies] = useState([]); // стейт найденых фильмов
-  const [savedMovies, setSavedMovies] = useState([]); // стейт сохраненных фильмов
+  const [savedMoviesData, setSavedMoviesData] = useState([]); // стейт сохраненных фильмов
   const [сheckbox, setCheckbox] = useState(false); // чекбокс поиска
   const [searchInputValue, setSearchInputValue] = useState(''); // инпут поиска
   const [preloader, setPreloader] = useState(true); // прелоадер
@@ -114,11 +114,29 @@ function App() {
     }
   };
 
+  // ручка получения сохраненных фильмов
+  const handleGetSavedMovies = () => {
+    mainApi.getLikedMovies()
+      .then((movies) => setSavedMoviesData(movies.data))
+      .catch((error) => console.log(error));
+  };
+
   // ручка добавления карточки в избранное 
   const handleClickOnFavoritesMovies = (movie) => {
     mainApi.postLikedMovie(movie)
-    .then((movie) => setSavedMovies([movie.data, ...savedMovies]))
+    .then((movie) => setSavedMoviesData([movie.data, ...savedMoviesData]))
     .catch((error) => console.log(error));
+  };
+
+  // ручка удаления фильма
+  const handleSavedMovieDelete = (movieId) => {
+    mainApi.deleteMovie(movieId)
+      .then(() => {
+        setSavedMoviesData((stateMovie) => {
+          return stateMovie.filter((movie) => movie._id !== movieId);
+        });
+      })
+      .catch((error) => console.log(error));
   };
 
   // получение всех фильмов
@@ -134,6 +152,7 @@ function App() {
   useEffect(() => {
     handleOnCheckToken();
     handleOnCheckFoundMovies();
+    handleGetSavedMovies();
   }, []);
 
   // отображение прилоадера
@@ -149,18 +168,31 @@ function App() {
         element={
           <Movies
             moviesData={movies}
+            savedMoviesData={savedMoviesData}
             foundMoviesData={foundMovies}
             searchCheckboxValue={сheckbox}
             searchInputValue={searchInputValue}
             handleFoundMoviesData={setFoundMovies}
             handleSearchInputValue={setSearchInputValue}
             handleSearchCheckboxValue={setCheckbox}
+            handleDeleteMovie={handleSavedMovieDelete}
             saveMovie={handleClickOnFavoritesMovies}
           />}
       />
-      <Route path="/saved-movies" element={<SavedMovies />} />
-      <Route path="/profile"
-        element={<Profile userInfo={currentUser} handleSignout={handleSignout} />}
+      <Route
+          path="/saved-movies"
+          element={
+            <SavedMovies
+            movies={savedMoviesData}
+            handleDeleteMovie={handleSavedMovieDelete}
+            />
+          }
+      />
+      <Route
+        path="/profile"
+        element={
+          <Profile userInfo={currentUser} handleSignout={handleSignout} />
+        }
       />
       <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
       <Route path="/signin" element={<Login handleLogin={handleLogin} />} />

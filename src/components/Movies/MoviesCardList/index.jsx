@@ -5,9 +5,9 @@ import MoviesCard from "../MoviesCard";
 
 import "./MoviesCardList.css";
 
-function MoviesCardList({ foundMovies, saveMovie }) {
+function MoviesCardList({ movies, savedMovies, saveMovie, deleteMovie }) {
   const location = useLocation().pathname;
-
+  
   const [widthWindow, setWidthWindow] = useState(window.innerWidth); // ширина экрана
   const [numberMoviesOnPage, setNumbersMoviesOnPage] = useState(null); // количество рендера фильмов
   const [numberMoviesAddedOnPage, setNumberMoviesAddedOnPage] = useState(null); // количество добавления фильмов
@@ -38,29 +38,38 @@ function MoviesCardList({ foundMovies, saveMovie }) {
     setNumbersMoviesOnPage(numberMoviesOnPage + numberMoviesAddedOnPage);
   }
 
+  // ручка на удаление из избранного на основном роуте
+  const handleOnToggleButtonFavorites = (id) => {
+    // находим фильм и забираем его локальный id
+    const movieToDelete = savedMovies.find((item) => item.movieId === id);
+
+    // удаляем его
+    return deleteMovie(movieToDelete._id);
+  }
+
   return (
     <section className="movies__list" aria-label="Секция с фильмами">
       <div className="movies__container">
-        { foundMovies.length === 0
+        { movies.length === 0
           && 
           <h2 style={{textAlign: 'center', color: '#8D8D8D'}}>Ничего не найдено</h2>
         }
         <div className="movies__card-container">
           {
-            // location === '/saved-movies' ?
-            //   movies
-            //     .filter((film) => film.active === true)
-            //     .map((film, index) => (
-            //       <MoviesCard key={index} image={film.image} active={film.active} />
-            //     ))
-            // :
-            foundMovies.length > 0
-            && foundMovies.slice(0, numberMoviesOnPage).map((filmData) => (
-                <MoviesCard key={filmData.id} movie={filmData} saveMovie={saveMovie} />
+            movies.length > 0
+            && movies.slice(0, numberMoviesOnPage).map((filmData) => (
+                <MoviesCard
+                  key={filmData.id || filmData._id}
+                  movie={filmData}
+                  savedMoviesData={savedMovies}
+                  saveMovie={saveMovie}
+                  deleteMovie={deleteMovie}
+                  toggleFavoriteDelete={handleOnToggleButtonFavorites}
+                />
               ))
           }
         </div>
-        { foundMovies.length > numberMoviesOnPage && 
+        { movies.length > numberMoviesOnPage && 
           <div className="movies__button-container">
             {
               location !== '/saved-movies' &&

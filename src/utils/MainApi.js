@@ -13,7 +13,7 @@ class MainApi {
 
   // получение сохраненных фильмов
   getLikedMovies() {
-    return fetch(`${this._baseUrl}/movies}`, {
+    return fetch(`${this._baseUrl}/movies`, {
       method: 'GET',
       headers: this._headers,
       credentials: 'include',
