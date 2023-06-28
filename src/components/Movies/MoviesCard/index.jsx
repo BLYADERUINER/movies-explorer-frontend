@@ -15,6 +15,7 @@ function MoviesCard ({ movie, saveMovie, deleteMovie, savedMoviesData, toggleFav
   // изменение ссылки под роут
   const changingImageLing = location === '/saved-movies' ? movie.image : `https://api.nomoreparties.co/${movie.image.url}`;
 
+  // смена функции в зависимости от лайка
   const toggleButton = () => isFavoriteMovie ? toggleFavoriteDelete(movie.id) : saveMovie(movie);
 
 

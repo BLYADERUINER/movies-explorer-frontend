@@ -96,6 +96,13 @@ function App() {
       });
   };
 
+  // ручка обновления инфы 
+  const handleUpdateUserInfo = (newInfo) => {
+    mainApi.patchUserInfo(newInfo)
+      .then((res) => setCurrentUser(res))
+      .catch((error) => console.log(error));
+  };
+
   // ручка проверки фильмов
   const handleOnCheckFoundMovies = () => {
     const foundFilmsData = localStorage.getItem('foundmovies');
@@ -191,7 +198,11 @@ function App() {
       <Route
         path="/profile"
         element={
-          <Profile userInfo={currentUser} handleSignout={handleSignout} />
+          <Profile
+            userInfo={currentUser}
+            updateInfo={handleUpdateUserInfo}
+            handleSignout={handleSignout}
+          />
         }
       />
       <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
