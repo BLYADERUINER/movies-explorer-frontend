@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 
 import "./MoviesCard.css";
 
-function MoviesCard({ movie }) {
+function MoviesCard({ movie, saveMovie }) {
   const location = useLocation().pathname;
 
   const durationHrs = Math.floor(movie.duration / 60);
@@ -19,6 +19,7 @@ function MoviesCard({ movie }) {
         location !== "/saved-movies" ?
           <button
             className={`movies__button-favorite`}
+            onClick={() => saveMovie(movie)}
           />
         :
           <button className="movies__button-favorite movies__button-remove" />

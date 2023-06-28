@@ -13,6 +13,7 @@ function Movies({
   searchCheckboxValue,
   handleSearchInputValue,
   handleSearchCheckboxValue,
+  saveMovie,
 }) {
   return(
     <div className='movies'>
@@ -27,6 +28,7 @@ function Movies({
       />
       <MoviesCardList
         foundMovies={foundMoviesData}
+        saveMovie={saveMovie}
       />
       <Footer />
     </div>

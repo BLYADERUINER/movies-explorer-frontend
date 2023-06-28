@@ -5,7 +5,7 @@ import MoviesCard from "../MoviesCard";
 
 import "./MoviesCardList.css";
 
-function MoviesCardList({ foundMovies }) {
+function MoviesCardList({ foundMovies, saveMovie }) {
   const location = useLocation().pathname;
 
   const [widthWindow, setWidthWindow] = useState(window.innerWidth); // ширина экрана
@@ -56,7 +56,7 @@ function MoviesCardList({ foundMovies }) {
             // :
             foundMovies.length > 0
             && foundMovies.slice(0, numberMoviesOnPage).map((filmData) => (
-                <MoviesCard key={filmData.id} movie={filmData} />
+                <MoviesCard key={filmData.id} movie={filmData} saveMovie={saveMovie} />
               ))
           }
         </div>

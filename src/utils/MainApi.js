@@ -1,7 +1,7 @@
 class MainApi {
   constructor(options) {
-    this._baseUrl = options._baseUrl;
-    this._headers = options._headers;
+    this._baseUrl = options.baseUrl;
+    this._headers = options.headers;
   };
 
   // метод проверки ответа от сервера
@@ -27,7 +27,19 @@ class MainApi {
       method: 'POST',
       headers: this._headers,
       credentials: 'include',
-      body: JSON.stringify(movieData),
+      body: JSON.stringify({
+        country: movieData.country,
+        director: movieData.director,
+        duration: movieData.duration,
+        year: movieData.year,
+        description: movieData.description,
+        image: `https://api.nomoreparties.co/${movieData.image.url}`,
+        trailerLink: movieData.trailerLink,
+        thumbnail: `https://api.nomoreparties.co${movieData.image.formats.thumbnail.url}`,
+        movieId: movieData.id,
+        nameRU: movieData.nameRU,
+        nameEN: movieData.nameEN,
+      }),
     })
     .then(this._checkResponse)
   };

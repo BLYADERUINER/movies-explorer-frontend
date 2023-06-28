@@ -1,6 +1,9 @@
 import MainApi from "./MainApi";
 import AuthApi from "./AuthApi";
-import MoviesApi from "./MoviesApi";
+
+const headers = {
+  'Content-Type': 'application/json',
+}
 
 export const mainApi = new MainApi({
   baseUrl: 'http://localhost:3000',
@@ -17,4 +20,10 @@ export const authApi = new AuthApi({
   },
 });
 
-export const moviesApi = new MoviesApi({});
+export const getMovies = () => {
+  return fetch('https://api.nomoreparties.co/beatfilm-movies', {
+    method: 'GET',
+    headers,
+  })
+  .then(mainApi._checkResponse)
+};

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 
-import { moviesApi } from "../../utils/api";
+import { mainApi, getMovies, authApi } from "../../utils/api";
 
 import Main from "../Main";
 import Movies from "../Movies";
@@ -10,23 +10,99 @@ import Profile from "../Profile";
 import Register from "../AuthReg/Register";
 import Login from "../AuthReg/Login";
 import NotFound from "../NotFound"; 
+import Preloader from "../Preloader";
 
 import './App.css';
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
   const [movies, setMovies] = useState([]); // cтейт фильмов
   const [foundMovies, setFoundMovies] = useState([]); // стейт найденых фильмов
+  const [savedMovies, setSavedMovies] = useState([]); // стейт сохраненных фильмов
   const [сheckbox, setCheckbox] = useState(false); // чекбокс поиска
   const [searchInputValue, setSearchInputValue] = useState(''); // инпут поиска
-  // const [preloader, setPreloader] = useState(false); // прелоадер
+  const [preloader, setPreloader] = useState(true); // прелоадер
+
+  const navigate = useNavigate();
+
+  // ручка проверки токена
+  const handleOnCheckToken = () => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      setPreloader(false);
+    } else {
+      mainApi.getUserInfo()
+        .then((res) => {
+          setCurrentUser(res);
+          setLoggedIn(true);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => setPreloader(false));
+    }
+  };
+
+  // ручка регистрации
+  const handleRegister = (name, email, password) => {
+    setPreloader(true);
+    authApi.register(name, email, password)
+    .then(() => {
+      console.log("успех");
+      setTimeout(() => navigate('/signin', {replace: true}), 1000);
+    })
+    .catch((error) => {
+      console.log(error);
+      // setToggleInfoTooltip({image: false, text: 'Что-то пошло не так! Попробуйте ещё раз.'});
+    })
+    .finally(() => {
+      setPreloader(false);
+      // handleInfoTooltip();
+    });
+  };
+
+  // ручка логина
+  const handleLogin = ((email, password) => {
+    setPreloader(true);
+    authApi.login(email, password)
+    .then((data) => {
+      if (data) {
+        handleOnCheckToken();
+        localStorage.setItem('token', 'true');
+        setLoggedIn(true);
+        navigate('/movies', {replace: true});
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      // setToggleInfoTooltip({image: false, text: 'Неверный адрес электронной почты или пароль'});
+      // handleInfoTooltip();
+    })
+    .finally(() => setPreloader(false));
+  });
+
+  // ручка выхода
+  const handleSignout = () => {
+    setPreloader(true);
+    authApi.logout()
+      .then(() => {
+        localStorage.removeItem('token');
+        setLoggedIn(false);
+        navigate('/signin', {replace: true});
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        setPreloader(false);
+      });
+  };
 
   // ручка проверки фильмов
-  function handleOnCheckFoundMovies() {
+  const handleOnCheckFoundMovies = () => {
     const foundFilmsData = localStorage.getItem('foundmovies');
 
     // проверяем есть ли локалке данные
     if (!foundFilmsData) {
-      return;
+      return
     } else {
       // парсим полученые данные
       const foundData = JSON.parse(foundFilmsData);
@@ -36,11 +112,18 @@ function App() {
       setCheckbox(foundData.checkboxValue);
       setSearchInputValue(foundData.inputValue);
     }
-  }
+  };
+
+  // ручка добавления карточки в избранное 
+  const handleClickOnFavoritesMovies = (movie) => {
+    mainApi.postLikedMovie(movie)
+    .then((movie) => setSavedMovies([movie.data, ...savedMovies]))
+    .catch((error) => console.log(error));
+  };
 
   // получение всех фильмов
   useEffect(() => {
-    moviesApi.getMovies()
+    getMovies()
     .then((moviesData) => {
       setMovies(moviesData);
     })
@@ -49,8 +132,14 @@ function App() {
 
   // получение фильмов из локалки
   useEffect(() => {
+    handleOnCheckToken();
     handleOnCheckFoundMovies();
   }, []);
+
+  // отображение прилоадера
+  if (preloader) {
+    return <Preloader />;
+  }
 
   return (
     <Routes>
@@ -66,12 +155,15 @@ function App() {
             handleFoundMoviesData={setFoundMovies}
             handleSearchInputValue={setSearchInputValue}
             handleSearchCheckboxValue={setCheckbox}
+            saveMovie={handleClickOnFavoritesMovies}
           />}
       />
       <Route path="/saved-movies" element={<SavedMovies />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/signup" element={<Register />} />
-      <Route path="/signin" element={<Login />} />
+      <Route path="/profile"
+        element={<Profile userInfo={currentUser} handleSignout={handleSignout} />}
+      />
+      <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
+      <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
