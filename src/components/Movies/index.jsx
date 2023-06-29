@@ -7,6 +7,7 @@ import './Movies.css';
 
 function Movies({
   moviesData,
+  saveMovie,
   savedMoviesData,
   foundMoviesData,
   handleFoundMoviesData,
@@ -15,7 +16,7 @@ function Movies({
   handleSearchInputValue,
   handleSearchCheckboxValue,
   handleDeleteMovie,
-  saveMovie,
+  handlePreloader
 }) {
   return(
     <div className='movies'>

@@ -103,27 +103,32 @@ function App() {
 
   // ручка обновления инфы 
   const handleUpdateUserInfo = (newInfo) => {
+    setPreloader(true);
     mainApi.patchUserInfo(newInfo)
       .then((res) => setCurrentUser(res))
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(() => setPreloader(false));
   };
 
   // получение всех фильмов
   const getAllMovies = () => {
+    setPreloader(true);
     getMovies()
     .then((moviesData) => {
       setMovies(moviesData);
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.log(error))
+    .finally(() => setPreloader(false));
   };
 
   // ручка проверки фильмов
   const handleOnCheckFoundMovies = () => {
+    setPreloader(true);
     const foundFilmsData = localStorage.getItem('foundmovies');
 
     // проверяем есть ли в локалке данные
     if (!foundFilmsData) {
-      return
+      return setPreloader(false);
     } else {
       // парсим полученые данные
       const foundData = JSON.parse(foundFilmsData);
@@ -132,11 +137,13 @@ function App() {
       setFoundMovies(foundData.movies);
       setCheckbox(foundData.checkboxValue);
       setSearchInputValue(foundData.inputValue);
+      setPreloader(false);
     }
   };
 
   // ручка получения сохраненных фильмов
   const handleGetSavedMovies = useCallback(() => {
+    setPreloader(true);
     mainApi.getLikedMovies()
       .then((movies) => {
         const userId = currentUser.data._id;
@@ -145,44 +152,46 @@ function App() {
         setSavedMoviesData(userMovies);
         setFilteredFavoriteMovies(userMovies);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(() => setPreloader(false));
   }, [currentUser]);
 
 
   useEffect(() => {
-    if (loggedIn) {
-      getAllMovies();
-    }
+    if (loggedIn)
+    return getAllMovies();
   }, [loggedIn]);
 
   useEffect(() => {
-    if (loggedIn) {
-      handleOnCheckFoundMovies();
-    }
+    if (loggedIn)
+    return handleOnCheckFoundMovies();
   }, [loggedIn])
 
   useEffect(() => {
-    if (loggedIn) {
-      handleGetSavedMovies();
-    }
+    if (loggedIn)
+    return handleGetSavedMovies();
   }, [handleGetSavedMovies, loggedIn]);
 
   // ручка добавления карточки в избранное 
   const handleClickOnFavoritesMovies = (movie) => {
+    setPreloader(true);
     mainApi.postLikedMovie(movie)
     .then((movie) => setSavedMoviesData([movie.data, ...savedMoviesData]))
-    .catch((error) => console.log(error));
+    .catch((error) => console.log(error))
+    .finally(() => setPreloader(false));
   };
   
   // ручка удаления фильма
   const handleSavedMovieDelete = (movieId) => {
+    setPreloader(true);
     mainApi.deleteMovie(movieId)
       .then(() => {
         setSavedMoviesData((stateMovie) => {
           return stateMovie.filter((movie) => movie._id !== movieId);
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(() => setPreloader(false));
   };
 
   // отображение прилоадера

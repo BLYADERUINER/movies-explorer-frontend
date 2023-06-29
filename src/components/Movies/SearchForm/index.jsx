@@ -9,7 +9,7 @@ function SearchForm({
   checkboxValue,
   handleFoundMoviesData,
   handleSearchInputValue,
-  handleSearchCheckboxValue
+  handleSearchCheckboxValue,
 }) {
   const location = useLocation().pathname;
   const searchInputRef = useRef(null);
@@ -38,6 +38,7 @@ function SearchForm({
   // ручка поиска
   const handleOnSubmit = (event) => {
     event.preventDefault();
+
     const searchResult = filterMovies(movies, searchInputRef.current.value, searchCheckboxRef.current.checked);
 
     // записываем найденые значения
@@ -53,7 +54,7 @@ function SearchForm({
       checkboxValue: searchCheckboxRef.current.checked,
       movies: searchResult,
     }));
-  }
+  };
 
   // ручка значения инпута
   const handleChangeInputValue = (event) => {

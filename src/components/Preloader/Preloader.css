@@ -41,7 +41,7 @@
 
 .preloader {
     display: flex;
-    /* background-color: rgba(0, 0, 0, 0.6); */
+    background-color: transparent;
     backdrop-filter: blur(3px);
     align-items: center;
     justify-content: center;
