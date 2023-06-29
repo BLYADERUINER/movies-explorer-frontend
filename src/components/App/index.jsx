@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 import { mainApi, getMovies, authApi } from "../../utils/api";
+import CurrentUserContext from "../../context/CurrentUserContext";
+import ProtectedRouteElement from "../ProtectedRoute";
 
 import Main from "../Main";
 import Movies from "../Movies";
@@ -15,8 +17,8 @@ import Preloader from "../Preloader";
 import './App.css';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false); // стейт входа
+  const [currentUser, setCurrentUser] = useState({}); // стейт юзера
   const [movies, setMovies] = useState([]); // cтейт фильмов
   const [foundMovies, setFoundMovies] = useState([]); // стейт найденых фильмов
   const [savedMoviesData, setSavedMoviesData] = useState([]); // стейт сохраненных фильмов
@@ -150,48 +152,51 @@ function App() {
         const userMovies = movies.data.filter((item) => item.owner === userId);
         // возвращаем фильмы пользователя
         setSavedMoviesData(userMovies);
-        setFilteredFavoriteMovies(userMovies);
       })
       .catch((error) => console.log(error))
       .finally(() => setPreloader(false));
   }, [currentUser]);
 
-
+  // получение фильмов
   useEffect(() => {
     if (loggedIn)
     return getAllMovies();
   }, [loggedIn]);
 
+  // получение найденый фильмов
   useEffect(() => {
     if (loggedIn)
     return handleOnCheckFoundMovies();
   }, [loggedIn])
 
+  // получение сохраненых фильмов
   useEffect(() => {
     if (loggedIn)
     return handleGetSavedMovies();
   }, [handleGetSavedMovies, loggedIn]);
 
+  // сохранение в стейт при изменении сохраненных фильмов
+  useEffect(() => {
+    if (loggedIn)
+    return setFilteredFavoriteMovies(savedMoviesData);
+  }, [savedMoviesData, loggedIn]);
+
   // ручка добавления карточки в избранное 
   const handleClickOnFavoritesMovies = (movie) => {
-    setPreloader(true);
     mainApi.postLikedMovie(movie)
     .then((movie) => setSavedMoviesData([movie.data, ...savedMoviesData]))
-    .catch((error) => console.log(error))
-    .finally(() => setPreloader(false));
+    .catch((error) => console.log(error));
   };
   
   // ручка удаления фильма
   const handleSavedMovieDelete = (movieId) => {
-    setPreloader(true);
     mainApi.deleteMovie(movieId)
       .then(() => {
         setSavedMoviesData((stateMovie) => {
           return stateMovie.filter((movie) => movie._id !== movieId);
         });
       })
-      .catch((error) => console.log(error))
-      .finally(() => setPreloader(false));
+      .catch((error) => console.log(error));
   };
 
   // отображение прилоадера
@@ -200,48 +205,56 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<Main />} />
-      <Route
-        path="/movies"
-        element={
-          <Movies
-            moviesData={movies}
-            savedMoviesData={savedMoviesData}
-            foundMoviesData={foundMovies}
-            searchCheckboxValue={сheckbox}
-            searchInputValue={searchInputValue}
-            handleFoundMoviesData={setFoundMovies}
-            handleSearchInputValue={setSearchInputValue}
-            handleSearchCheckboxValue={setCheckbox}
-            handleDeleteMovie={handleSavedMovieDelete}
-            saveMovie={handleClickOnFavoritesMovies}
-          />}
-      />
-      <Route
-          path="/saved-movies"
+    <CurrentUserContext.Provider value={currentUser}>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route
+          path="/movies"
           element={
-            <SavedMovies
-            moviesData={filteredFavoriteMovies}
-            handleFoundMoviesData={setFilteredFavoriteMovies}
-            handleDeleteMovie={handleSavedMovieDelete}
-            />
+            <ProtectedRouteElement loggedIn={loggedIn}>
+              <Movies
+                moviesData={movies}
+                savedMoviesData={savedMoviesData}
+                foundMoviesData={foundMovies}
+                searchCheckboxValue={сheckbox}
+                searchInputValue={searchInputValue}
+                handleFoundMoviesData={setFoundMovies}
+                handleSearchInputValue={setSearchInputValue}
+                handleSearchCheckboxValue={setCheckbox}
+                handleDeleteMovie={handleSavedMovieDelete}
+                saveMovie={handleClickOnFavoritesMovies}
+              />
+            </ProtectedRouteElement>
           }
-      />
-      <Route
-        path="/profile"
-        element={
-          <Profile
-            userInfo={currentUser}
-            updateInfo={handleUpdateUserInfo}
-            handleSignout={handleSignout}
-          />
-        }
-      />
-      <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
-      <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        />
+        <Route
+            path="/saved-movies"
+            element={
+              <ProtectedRouteElement loggedIn={loggedIn}>
+                <SavedMovies
+                  moviesData={filteredFavoriteMovies}
+                  handleFoundMoviesData={setFilteredFavoriteMovies}
+                  handleDeleteMovie={handleSavedMovieDelete}
+                />
+              </ProtectedRouteElement>
+            }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRouteElement loggedIn={loggedIn}>
+              <Profile
+                updateInfo={handleUpdateUserInfo}
+                handleSignout={handleSignout}
+              />
+            </ProtectedRouteElement>
+          }
+        />
+        <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
+        <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </CurrentUserContext.Provider>
   );
 }
 

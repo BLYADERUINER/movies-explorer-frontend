@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
+import CurrentUserContext from '../../context/CurrentUserContext';
 import NavTab from '../NavTab';
 
 import './Profile.css';
 
-function Profile({ userInfo, updateInfo, handleSignout }) {
-  const userName = userInfo.data.name;
-  const userEmail = userInfo.data.email;
+function Profile({ updateInfo, handleSignout }) {
+  const currentUser = useContext(CurrentUserContext);
+
+  const userName = currentUser.data.name;
+  const userEmail = currentUser.data.email;
 
   // стейт доступа к изменениям инфы
   const [editAcess, setEditAcess] = useState(true);
