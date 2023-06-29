@@ -58,13 +58,9 @@ function App() {
       console.log("успех");
       setTimeout(() => navigate('/signin', {replace: true}), 1000);
     })
-    .catch((error) => {
-      console.log(error);
-      // setToggleInfoTooltip({image: false, text: 'Что-то пошло не так! Попробуйте ещё раз.'});
-    })
+    .catch((error) => console.log(error))
     .finally(() => {
       setPreloader(false);
-      // handleInfoTooltip();
     });
   };
 
@@ -73,18 +69,13 @@ function App() {
     setPreloader(true);
     authApi.login(email, password)
     .then((data) => {
-      if (data) {
-        handleOnCheckToken();
+      if (data.ok) {
         localStorage.setItem('token', 'true');
         setLoggedIn(true);
         navigate('/movies', {replace: true});
       }
     })
-    .catch((error) => {
-      console.log(error);
-      // setToggleInfoTooltip({image: false, text: 'Неверный адрес электронной почты или пароль'});
-      // handleInfoTooltip();
-    })
+    .catch((error) => console.log(error))
     .finally(() => setPreloader(false));
   });
 
@@ -95,7 +86,7 @@ function App() {
       .then(() => {
         localStorage.removeItem('token');
         setLoggedIn(false);
-        navigate('/signin', {replace: true});
+        navigate('/', {replace: true});
       })
       .catch((error) => console.log(error))
       .finally(() => {
@@ -252,7 +243,14 @@ function App() {
         />
         <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
         <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="*"
+          element={
+            <ProtectedRouteElement loggedIn={loggedIn}>
+              <NotFound />
+            </ProtectedRouteElement>
+          }
+        />
       </Routes>
     </CurrentUserContext.Provider>
   );
