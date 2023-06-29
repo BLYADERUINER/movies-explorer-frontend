@@ -4,14 +4,26 @@ import MoviesCardList from '../Movies/MoviesCardList';
 import Footer from '../Footer';
 
 import './SavedMovies.css';
+import { useState } from 'react';
 
-function SavedMovies({ movies, handleDeleteMovie }) {
+function SavedMovies({ moviesData, handleFoundMoviesData,  handleDeleteMovie }) {
+  const [inputFavorite, setInputFavorite] = useState('');
+  const [checkboxFavorite, setCheckboxFavorite] = useState(false);
+
+
   return(
     <div className='movies'>
       <NavTab logined />
-      <SearchForm />
+      <SearchForm
+        movies={moviesData}
+        inputValue={inputFavorite}
+        checkboxValue={checkboxFavorite}
+        handleFoundMoviesData={handleFoundMoviesData}
+        handleSearchInputValue={setInputFavorite}
+        handleSearchCheckboxValue={setCheckboxFavorite}
+      />
       <MoviesCardList
-        movies={movies}
+        movies={moviesData}
         deleteMovie={handleDeleteMovie}
       />
       <Footer />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 import { mainApi, getMovies, authApi } from "../../utils/api";
@@ -20,6 +20,7 @@ function App() {
   const [movies, setMovies] = useState([]); // cтейт фильмов
   const [foundMovies, setFoundMovies] = useState([]); // стейт найденых фильмов
   const [savedMoviesData, setSavedMoviesData] = useState([]); // стейт сохраненных фильмов
+  const [filteredFavoriteMovies, setFilteredFavoriteMovies] = useState([]); // стейт фильтра сохраненных фильмов
   const [сheckbox, setCheckbox] = useState(false); // чекбокс поиска
   const [searchInputValue, setSearchInputValue] = useState(''); // инпут поиска
   const [preloader, setPreloader] = useState(true); // прелоадер
@@ -42,6 +43,10 @@ function App() {
         .finally(() => setPreloader(false));
     }
   };
+
+  useEffect(() => {
+    handleOnCheckToken();
+  }, []);
 
   // ручка регистрации
   const handleRegister = (name, email, password) => {
@@ -103,11 +108,20 @@ function App() {
       .catch((error) => console.log(error));
   };
 
+  // получение всех фильмов
+  const getAllMovies = () => {
+    getMovies()
+    .then((moviesData) => {
+      setMovies(moviesData);
+    })
+    .catch((error) => console.log(error));
+  };
+
   // ручка проверки фильмов
   const handleOnCheckFoundMovies = () => {
     const foundFilmsData = localStorage.getItem('foundmovies');
 
-    // проверяем есть ли локалке данные
+    // проверяем есть ли в локалке данные
     if (!foundFilmsData) {
       return
     } else {
@@ -122,11 +136,36 @@ function App() {
   };
 
   // ручка получения сохраненных фильмов
-  const handleGetSavedMovies = () => {
+  const handleGetSavedMovies = useCallback(() => {
     mainApi.getLikedMovies()
-      .then((movies) => setSavedMoviesData(movies.data))
+      .then((movies) => {
+        const userId = currentUser.data._id;
+        const userMovies = movies.data.filter((item) => item.owner === userId);
+        // возвращаем фильмы пользователя
+        setSavedMoviesData(userMovies);
+        setFilteredFavoriteMovies(userMovies);
+      })
       .catch((error) => console.log(error));
-  };
+  }, [currentUser]);
+
+
+  useEffect(() => {
+    if (loggedIn) {
+      getAllMovies();
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      handleOnCheckFoundMovies();
+    }
+  }, [loggedIn])
+
+  useEffect(() => {
+    if (loggedIn) {
+      handleGetSavedMovies();
+    }
+  }, [handleGetSavedMovies, loggedIn]);
 
   // ручка добавления карточки в избранное 
   const handleClickOnFavoritesMovies = (movie) => {
@@ -134,7 +173,7 @@ function App() {
     .then((movie) => setSavedMoviesData([movie.data, ...savedMoviesData]))
     .catch((error) => console.log(error));
   };
-
+  
   // ручка удаления фильма
   const handleSavedMovieDelete = (movieId) => {
     mainApi.deleteMovie(movieId)
@@ -145,22 +184,6 @@ function App() {
       })
       .catch((error) => console.log(error));
   };
-
-  // получение всех фильмов
-  useEffect(() => {
-    getMovies()
-    .then((moviesData) => {
-      setMovies(moviesData);
-    })
-    .catch((error) => console.log(error));
-  }, [setMovies]);
-
-  // получение фильмов из локалки
-  useEffect(() => {
-    handleOnCheckToken();
-    handleOnCheckFoundMovies();
-    handleGetSavedMovies();
-  }, []);
 
   // отображение прилоадера
   if (preloader) {
@@ -190,7 +213,8 @@ function App() {
           path="/saved-movies"
           element={
             <SavedMovies
-            movies={savedMoviesData}
+            moviesData={filteredFavoriteMovies}
+            handleFoundMoviesData={setFilteredFavoriteMovies}
             handleDeleteMovie={handleSavedMovieDelete}
             />
           }

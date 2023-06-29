@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import "./MoviesCard.css";
 
@@ -25,11 +25,17 @@ function MoviesCard ({ movie, saveMovie, deleteMovie, savedMoviesData, toggleFav
         <h3 className="movies__name">{movie.nameRU}</h3>
         <span className="movies__duration">{`${durationHrs}ч ${durationMin}м`}</span>
       </div>
-      <img
-        className="movies__image"
-        src={changingImageLing}
-        alt={`Фильм: ${movie.nameRU}`}
-      />
+      <Link
+        to={movie.trailerLink}
+        target="_blank"
+        className="movies__video-link"
+      >
+        <img
+          className="movies__image"
+          src={changingImageLing}
+          alt={`Фильм: ${movie.nameRU}`}
+        />
+      </Link>
       {
         location !== "/saved-movies" ?
           <button

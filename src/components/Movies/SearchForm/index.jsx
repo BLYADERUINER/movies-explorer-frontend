@@ -1,4 +1,6 @@
 import { useRef } from "react";
+import { useLocation } from "react-router-dom";
+
 import "./SearchForm.css";
 
 function SearchForm({
@@ -9,6 +11,7 @@ function SearchForm({
   handleSearchInputValue,
   handleSearchCheckboxValue
 }) {
+  const location = useLocation().pathname;
   const searchInputRef = useRef(null);
   const searchCheckboxRef = useRef(null);
 
@@ -33,12 +36,16 @@ function SearchForm({
   }
 
   // ручка поиска
-  function handleOnSubmit(event) {
+  const handleOnSubmit = (event) => {
     event.preventDefault();
     const searchResult = filterMovies(movies, searchInputRef.current.value, searchCheckboxRef.current.checked);
 
     // записываем найденые значения
     handleFoundMoviesData(searchResult);
+
+    if (location === '/saved-movies') {
+      return;
+    }
 
     // а также в локал
     localStorage.setItem('foundmovies', JSON.stringify({
