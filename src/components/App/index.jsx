@@ -71,12 +71,10 @@ function App() {
   const handleLogin = ((email, password) => {
     setPreloader(true);
     authApi.login(email, password)
-    .then((data) => {
-      if (data.ok) {
-        localStorage.setItem('token', 'true');
-        handleOnCheckToken();
-        navigate('/movies', {replace: true});
-      }
+    .then(() => {
+      localStorage.setItem('token', 'true');
+      setLoggedIn(true);
+      navigate('/movies', {replace: true});
     })
     .catch((error) => {
       setAuthRegError(true);
@@ -254,7 +252,7 @@ function App() {
               handleRegister={handleRegister}
               errorReg={authRegError}
               setErrorReg={setAuthRegError}
-              />
+            />
           }
         />
         <Route
