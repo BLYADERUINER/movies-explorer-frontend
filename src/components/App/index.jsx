@@ -67,10 +67,24 @@ function App() {
     });
   };
 
+  // ручка получения юзера
+  const handleGetUser = () => {
+    setPreloader(true);
+    mainApi.getUserInfo()
+    .then((res) => {
+      setCurrentUser(res);
+    })
+    .catch((error) => console.log(error))
+    .finally(() => setPreloader(false));
+  };
+
   // ручка логина
   const handleLogin = ((email, password) => {
     setPreloader(true);
     authApi.login(email, password)
+    .then(() => {
+      handleGetUser();
+    })
     .then(() => {
       localStorage.setItem('token', 'true');
       setLoggedIn(true);
@@ -267,11 +281,7 @@ function App() {
         />
         <Route
           path="*"
-          element={
-            <ProtectedRouteElement loggedIn={loggedIn}>
-              <NotFound />
-            </ProtectedRouteElement>
-          }
+          element={<NotFound />}
         />
       </Routes>
     </CurrentUserContext.Provider>
