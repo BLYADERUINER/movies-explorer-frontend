@@ -1,34 +1,35 @@
-import { useState } from 'react';
+import useInput from '../../../hooks/useInput';
 
 import AuthReg from "../index";
 
-function Login({ handleLogin }) {
-  // стейт значений формы
-  const [formValue, setFormValue] = useState({
-    email: '',
-    password: ''
-  });
+function Login({ handleLogin, errorLogin, setErrorLogin }) {
+  const emailValidation = useInput('', {isEmpty: true, isEmail: true});
+  const passwordValidation = useInput('', {isEmpty: true});
 
-  // ручка вводимых значений
-  const handleChange = (event) => {
-    const {name, value} = event.target;
+  // проверка на валид для кнопки
+  const handleOnDisableButton = () => !emailValidation.inputValid || !passwordValidation.inputValid;
 
-    setFormValue({
-      ...formValue,
-      [name]: value
-    });
+  // проверка ошибок
+  const emailValid = () => emailValidation.isDirty && emailValidation.emailError;
+  const emptyValid = () => (emailValidation.isDirty && emailValidation.isEmpty) || (passwordValidation.isDirty && passwordValidation.isEmpty);
+
+  // ручка ресета ошибки
+  const handleResetAuthError = () => {
+    setErrorLogin(false);
   };
 
   // ручка отправки
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const {email, password} = formValue;
+    const email = emailValidation.value;
+    const password = passwordValidation.value;
+    
     handleLogin(email, password);
   };
 
   return(
-    <AuthReg title={'Рады видеть!'} handleSubmit={handleSubmit}>
+    <AuthReg title={'Рады видеть!'} handleSubmit={handleSubmit} handleDisable={handleOnDisableButton}>
       <div className='authreg__input-container'>
         <span className='authreg__span'>E-mail</span>
         <input
@@ -37,7 +38,10 @@ function Login({ handleLogin }) {
           placeholder='pochta@yandex.ru'
           name='email'
           required
-          onChange={handleChange}
+          onClick={handleResetAuthError}
+          onBlur={emailValidation.onBlur}
+          onChange={emailValidation.onChange}
+          value={emailValidation.value}
         />
       </div>
       <div className='authreg__input-container'>
@@ -47,9 +51,15 @@ function Login({ handleLogin }) {
           type='password'
           required
           name='password'
-          onChange={handleChange}
+          onClick={handleResetAuthError}
+          onBlur={passwordValidation.onBlur}
+          onChange={passwordValidation.onChange}
+          value={passwordValidation.value}
         />
       </div>
+      {emailValid() && <span className='authreg__error'>Введен некорректный email</span>}
+      {emptyValid() && <span className='authreg__error'>Все поля обязательны к заполнению</span>}
+      {errorLogin && <span className='authreg__error'>Неправильный логин или пароль</span>}
     </AuthReg>
   );
 }

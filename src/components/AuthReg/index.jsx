@@ -4,7 +4,7 @@ import logo from '../../images/logo.svg';
 
 import './AuthReg.css';
 
-function AuthReg({title, handleSubmit, children}) {
+function AuthReg({title, handleSubmit, children, handleDisable}) {
   const location = useLocation().pathname;
 
   return(
@@ -18,12 +18,21 @@ function AuthReg({title, handleSubmit, children}) {
           { children }
           {
             location === '/signup' ?
-              <button className='authreg__button-submit'>Зарегистрироваться</button>
+              <button
+                className='authreg__button-submit'
+                disabled={handleDisable()}
+              >
+                Зарегистрироваться
+              </button>
             :
-              <button className='authreg__button-submit authreg__button-signin'>Войти</button>
+              <button
+                className='authreg__button-submit authreg__button-signin'
+                disabled={handleDisable()}
+              >
+                Войти
+              </button>
           }
         </form>
-        <span className='authreg__error' />
         {
           location === '/signup' ?
             <div className='authreg__link-container'>

@@ -3,12 +3,19 @@ class AuthApi {
     this._baseUrl = options.baseUrl;
     this._headers = options.headers;
   };
+
+  // метод проверки ответа от сервера
+  _checkResponse(response){
+    return response.ok
+      ? response.json()
+      : Promise.reject(`Ошибка: ${response.statusText}`);
+  };
+
   // регистрация
   register(name, email, password) {
     return fetch(`${this._baseUrl}/signup`, {
       method: 'POST',
       headers: this._headers,
-      credentials: 'include',
       body: JSON.stringify({name, email, password})
     })
     .then(this._checkResponse)
@@ -19,7 +26,6 @@ class AuthApi {
     return fetch(`${this._baseUrl}/signin`, {
       method: 'POST',
       headers: this._headers,
-      credentials: 'include',
       body: JSON.stringify({email, password})
     })
     .then(this._checkResponse)

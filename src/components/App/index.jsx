@@ -26,6 +26,7 @@ function App() {
   const [сheckbox, setCheckbox] = useState(false); // чекбокс поиска
   const [searchInputValue, setSearchInputValue] = useState(''); // инпут поиска
   const [preloader, setPreloader] = useState(true); // прелоадер
+  const [authRegError, setAuthRegError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -55,10 +56,12 @@ function App() {
     setPreloader(true);
     authApi.register(name, email, password)
     .then(() => {
-      console.log("успех");
-      setTimeout(() => navigate('/signin', {replace: true}), 1000);
+      navigate('/signin', {replace: true});
     })
-    .catch((error) => console.log(error))
+    .catch((error) => {
+      setAuthRegError(true);
+      console.log(error);
+    })
     .finally(() => {
       setPreloader(false);
     });
@@ -75,7 +78,10 @@ function App() {
         navigate('/movies', {replace: true});
       }
     })
-    .catch((error) => console.log(error))
+    .catch((error) => {
+      setAuthRegError(true);
+      console.log(error);
+    })
     .finally(() => setPreloader(false));
   });
 
@@ -85,7 +91,7 @@ function App() {
     authApi.logout()
       .then(() => {
         localStorage.removeItem('token');
-        setLoggedIn(false);
+        handleOnCheckToken();
         navigate('/', {replace: true});
       })
       .catch((error) => console.log(error))
@@ -241,8 +247,26 @@ function App() {
             </ProtectedRouteElement>
           }
         />
-        <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
-        <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
+        <Route
+          path="/signup"
+          element={
+            <Register
+              handleRegister={handleRegister}
+              errorReg={authRegError}
+              setErrorReg={setAuthRegError}
+              />
+          }
+        />
+        <Route
+          path="/signin"
+          element={
+            <Login
+              handleLogin={handleLogin}
+              errorLogin={authRegError}
+              setErrorLogin={setAuthRegError}
+            />
+          }
+        />
         <Route
           path="*"
           element={

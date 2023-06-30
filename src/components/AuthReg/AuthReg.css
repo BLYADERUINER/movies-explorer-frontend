@@ -89,6 +89,11 @@
   margin-top: 69px;
 }
 
+.authreg__button-submit:disabled {
+  background-color: #A0A0A0;
+  cursor: default;
+}
+
 .authreg__button-signin {
   margin-top: 157px;
 }
