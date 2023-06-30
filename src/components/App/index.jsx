@@ -74,7 +74,7 @@ function App() {
     .then((data) => {
       if (data.ok) {
         localStorage.setItem('token', 'true');
-        setLoggedIn(true);
+        handleOnCheckToken();
         navigate('/movies', {replace: true});
       }
     })
@@ -91,7 +91,7 @@ function App() {
     authApi.logout()
       .then(() => {
         localStorage.removeItem('token');
-        handleOnCheckToken();
+        setLoggedIn(false);
         navigate('/', {replace: true});
       })
       .catch((error) => console.log(error))
