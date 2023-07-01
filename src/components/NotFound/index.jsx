@@ -9,7 +9,7 @@ function NotFound() {
     <div className="notfound">
       <span className="notfound__span">404</span>
       <p className="notfound__text">Страница не найдена</p>
-      <NavLink className="notfound__link" to={navigate(-1)}>Назад</NavLink>
+      <NavLink className="notfound__link" onClick={() => navigate(-1)}>Назад</NavLink>
     </div>
   );
 }

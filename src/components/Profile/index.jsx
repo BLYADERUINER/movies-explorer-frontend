@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import CurrentUserContext from '../../context/CurrentUserContext';
@@ -14,6 +14,7 @@ function Profile({ updateInfo, handleSignout }) {
 
   // стейт доступа к изменениям инфы
   const [editAcess, setEditAcess] = useState(true);
+  const [disableButton, setDisableButton] = useState(false);
 
   // стейт значений формы
   const [formValue, setFormValue] = useState({
@@ -31,13 +32,18 @@ function Profile({ updateInfo, handleSignout }) {
     });
   };
 
+  // проверка инпутов на идентичность значения
+  useEffect(() => {
+    if (formValue.email === userEmail && formValue.name === userName) {
+      return setDisableButton(true);
+    } else {
+      return setDisableButton(false);
+    }
+  }, [formValue.email, formValue.name, userEmail, userName]);
+
   // ручка отправки
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    if (formValue.email === userEmail && formValue.name === userName) {
-      return toggleEditAcess();
-    }
 
     updateInfo(formValue);
     toggleEditAcess();
@@ -81,7 +87,7 @@ function Profile({ updateInfo, handleSignout }) {
         </div>
         <div className='profile__links-container'>
           <Link
-            className={`profile__link ${!editAcess ? 'profile__link_red' : ''}`}
+            className={`profile__link ${!editAcess ? 'profile__link_red' : ''} ${!editAcess && disableButton ? 'profile__link_disabled' : ''}`}
             onClick={editAcess ? toggleEditAcess : handleSubmit}
           >
             {editAcess ? 'Редактировать' : 'Изменить'}

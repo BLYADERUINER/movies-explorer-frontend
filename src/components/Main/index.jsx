@@ -7,10 +7,10 @@ import Footer from '../Footer';
 
 import './Main.css';
 
-function Main() {
+function Main({ loggedIn }) {
   return (
     <>
-      <NavTab />
+      <NavTab logined={loggedIn} />
       <Promo />
       <main className='main'>
         <AboutProject />

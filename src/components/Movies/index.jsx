@@ -16,7 +16,8 @@ function Movies({
   handleSearchInputValue,
   handleSearchCheckboxValue,
   handleDeleteMovie,
-  handlePreloader
+  resultSearch,
+  setResultSearch,
 }) {
   return(
     <div className='movies'>
@@ -28,12 +29,14 @@ function Movies({
         handleFoundMoviesData={handleFoundMoviesData}
         handleSearchInputValue={handleSearchInputValue}
         handleSearchCheckboxValue={handleSearchCheckboxValue}
+        setResultSearch={setResultSearch}
       />
       <MoviesCardList
         movies={foundMoviesData}
         savedMovies={savedMoviesData}
         saveMovie={saveMovie}
         deleteMovie={handleDeleteMovie}
+        resultSearch={resultSearch}
       />
       <Footer />
     </div>

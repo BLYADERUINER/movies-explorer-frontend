@@ -2,8 +2,10 @@ import { useState, useEffect, useCallback } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 import { mainApi, getMovies, authApi } from "../../utils/api";
+
 import CurrentUserContext from "../../context/CurrentUserContext";
 import ProtectedRouteElement from "../ProtectedRoute";
+import LogginedProtectedRoute from "../LogginedProtectedRouter";
 
 import Main from "../Main";
 import Movies from "../Movies";
@@ -22,11 +24,13 @@ function App() {
   const [movies, setMovies] = useState([]); // cтейт фильмов
   const [foundMovies, setFoundMovies] = useState([]); // стейт найденых фильмов
   const [savedMoviesData, setSavedMoviesData] = useState([]); // стейт сохраненных фильмов
+  const [searchSavedMovies, setSearchSavedMovies] = useState(false);
   const [filteredFavoriteMovies, setFilteredFavoriteMovies] = useState([]); // стейт фильтра сохраненных фильмов
   const [сheckbox, setCheckbox] = useState(false); // чекбокс поиска
   const [searchInputValue, setSearchInputValue] = useState(''); // инпут поиска
+  const [resultSearch, setResultSearch] = useState(false);
   const [preloader, setPreloader] = useState(true); // прелоадер
-  const [authRegError, setAuthRegError] = useState(false);
+  const [authRegError, setAuthRegError] = useState(false); // ошибка авторега
 
   const navigate = useNavigate();
 
@@ -51,12 +55,31 @@ function App() {
     handleOnCheckToken();
   }, []);
 
+  // ручка логина
+  const handleLogin = ((email, password) => {
+    setPreloader(true);
+    authApi.login(email, password)
+    .then(() => {
+      handleGetUser();
+    })
+    .then(() => {
+      localStorage.setItem('token', 'true');
+      setLoggedIn(true);
+      navigate('/movies', {replace: true});
+    })
+    .catch((error) => {
+      setAuthRegError(true);
+      console.log(error);
+    })
+    .finally(() => setPreloader(false));
+  });
+
   // ручка регистрации
   const handleRegister = (name, email, password) => {
     setPreloader(true);
     authApi.register(name, email, password)
     .then(() => {
-      navigate('/signin', {replace: true});
+      handleLogin(email, password);
     })
     .catch((error) => {
       setAuthRegError(true);
@@ -77,25 +100,6 @@ function App() {
     .catch((error) => console.log(error))
     .finally(() => setPreloader(false));
   };
-
-  // ручка логина
-  const handleLogin = ((email, password) => {
-    setPreloader(true);
-    authApi.login(email, password)
-    .then(() => {
-      handleGetUser();
-    })
-    .then(() => {
-      localStorage.setItem('token', 'true');
-      setLoggedIn(true);
-      navigate('/movies', {replace: true});
-    })
-    .catch((error) => {
-      setAuthRegError(true);
-      console.log(error);
-    })
-    .finally(() => setPreloader(false));
-  });
 
   // ручка выхода
   const handleSignout = () => {
@@ -184,11 +188,11 @@ function App() {
     return handleGetSavedMovies();
   }, [handleGetSavedMovies, loggedIn]);
 
-  // сохранение в стейт при изменении сохраненных фильмов
+  //сохранение в стейт при изменении сохраненных фильмов
   useEffect(() => {
     if (loggedIn)
     return setFilteredFavoriteMovies(savedMoviesData);
-  }, [savedMoviesData, loggedIn]);
+  }, []);
 
   // ручка добавления карточки в избранное 
   const handleClickOnFavoritesMovies = (movie) => {
@@ -201,6 +205,9 @@ function App() {
   const handleSavedMovieDelete = (movieId) => {
     mainApi.deleteMovie(movieId)
       .then(() => {
+        setFilteredFavoriteMovies((stateMovie) => {
+          return stateMovie.filter((movie) => movie._id !== movieId);
+        });
         setSavedMoviesData((stateMovie) => {
           return stateMovie.filter((movie) => movie._id !== movieId);
         });
@@ -216,7 +223,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={<Main loggedIn={loggedIn} />} />
         <Route
           path="/movies"
           element={
@@ -232,6 +239,8 @@ function App() {
                 handleSearchCheckboxValue={setCheckbox}
                 handleDeleteMovie={handleSavedMovieDelete}
                 saveMovie={handleClickOnFavoritesMovies}
+                resultSearch={resultSearch}
+                setResultSearch={setResultSearch}
               />
             </ProtectedRouteElement>
           }
@@ -241,9 +250,14 @@ function App() {
             element={
               <ProtectedRouteElement loggedIn={loggedIn}>
                 <SavedMovies
-                  moviesData={filteredFavoriteMovies}
+                  moviesData={savedMoviesData}
+                  filteredFavoriteMovies={filteredFavoriteMovies}
                   handleFoundMoviesData={setFilteredFavoriteMovies}
                   handleDeleteMovie={handleSavedMovieDelete}
+                  resultSearch={resultSearch}
+                  setResultSearch={setResultSearch}
+                  searchSavedMovies={searchSavedMovies}
+                  setSearchSavedMovies={setSearchSavedMovies}
                 />
               </ProtectedRouteElement>
             }
@@ -262,26 +276,34 @@ function App() {
         <Route
           path="/signup"
           element={
-            <Register
-              handleRegister={handleRegister}
-              errorReg={authRegError}
-              setErrorReg={setAuthRegError}
-            />
+            <LogginedProtectedRoute loggedIn={loggedIn}>
+              <Register
+                handleRegister={handleRegister}
+                errorReg={authRegError}
+                setErrorReg={setAuthRegError}
+              />
+            </LogginedProtectedRoute>
           }
         />
         <Route
           path="/signin"
           element={
-            <Login
-              handleLogin={handleLogin}
-              errorLogin={authRegError}
-              setErrorLogin={setAuthRegError}
-            />
+            <LogginedProtectedRoute loggedIn={loggedIn}>
+              <Login
+                handleLogin={handleLogin}
+                errorLogin={authRegError}
+                setErrorLogin={setAuthRegError}
+              />
+            </LogginedProtectedRoute>
           }
         />
         <Route
           path="*"
-          element={<NotFound />}
+          element={
+            <ProtectedRouteElement loggedIn={loggedIn}>
+              <NotFound />
+            </ProtectedRouteElement>
+          }
         />
       </Routes>
     </CurrentUserContext.Provider>

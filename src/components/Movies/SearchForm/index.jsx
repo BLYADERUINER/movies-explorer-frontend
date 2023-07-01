@@ -1,5 +1,8 @@
 import { useRef } from "react";
 import { useLocation } from "react-router-dom";
+import useInput from "../../../hooks/useInput";
+
+import { durationShortFilm } from "../../../utils/config";
 
 import "./SearchForm.css";
 
@@ -8,12 +11,19 @@ function SearchForm({
   inputValue,
   checkboxValue,
   handleFoundMoviesData,
-  handleSearchInputValue,
   handleSearchCheckboxValue,
+  setResultSearch,
+  setSearchSavedMovies,
 }) {
   const location = useLocation().pathname;
-  const searchInputRef = useRef(null);
+  const searchValidation = useInput(inputValue, {isEmpty: true});
   const searchCheckboxRef = useRef(null);
+
+  // проверка валидации поиска
+  const emptyValid = () => searchValidation.isDirty && searchValidation.isEmpty;
+
+  //проверка на валид для кнопки
+  const handleOnDisableButton = () => !searchValidation.inputValid;
 
   // поиск по значению в имени
   const filterName = (name, searchName) => name.includes(searchName);
@@ -28,7 +38,7 @@ function SearchForm({
       // если чекбокс истинный
       if (shortFilm) {
         // возвращаем фильмы менее 40 мин и отфильтрованный по значению 
-        return movie.duration <= 40 && filterName(movieName, searchNameMovie);
+        return movie.duration <= durationShortFilm && filterName(movieName, searchNameMovie);
       } else {
         return filterName(movieName, searchNameMovie);
       }
@@ -39,26 +49,29 @@ function SearchForm({
   const handleOnSubmit = (event) => {
     event.preventDefault();
 
-    const searchResult = filterMovies(movies, searchInputRef.current.value, searchCheckboxRef.current.checked);
+    const searchResult = filterMovies(movies, searchValidation.value, searchCheckboxRef.current.checked);
+
+    if (!searchResult) {
+      return setResultSearch(false);
+    } else {
+      setResultSearch(true);
+    }
 
     // записываем найденые значения
     handleFoundMoviesData(searchResult);
 
     if (location === '/saved-movies') {
+      setSearchSavedMovies(true);
       return;
     }
 
+
     // а также в локал
     localStorage.setItem('foundmovies', JSON.stringify({
-      inputValue: searchInputRef.current.value,
+      inputValue: searchValidation.value,
       checkboxValue: searchCheckboxRef.current.checked,
       movies: searchResult,
     }));
-  };
-
-  // ручка значения инпута
-  const handleChangeInputValue = (event) => {
-    handleSearchInputValue(event.target.value);
   };
 
   // переключатель чекбокса
@@ -73,13 +86,18 @@ function SearchForm({
           className="search__input"
           type="search"
           placeholder="Фильм"
-          onChange={handleChangeInputValue}
-          value={inputValue}
-          ref={searchInputRef}
-          required
+          onChange={searchValidation.onChange}
+          value={searchValidation.value}
+          onBlur={searchValidation.onBlur}
         />
-        <button className="search__submit-button">Найти</button>
+        <button
+          className="search__submit-button"
+          disabled={handleOnDisableButton()}
+        >
+          Найти
+        </button>
       </form>
+      {emptyValid() && <span className='search__error'>Поле обязательно к заполению</span>}
       <div className="search__label">
         <input
           className="search__checkbox"

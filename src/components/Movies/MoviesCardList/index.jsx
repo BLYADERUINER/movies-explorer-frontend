@@ -2,34 +2,47 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import MoviesCard from "../MoviesCard";
+import { desktopWidth, tabWidth, moviesOnPage, addMovieOnPage } from "../../../utils/config";
 
 import "./MoviesCardList.css";
 
-function MoviesCardList({ movies, savedMovies, saveMovie, deleteMovie }) {
+function MoviesCardList({
+  movies,
+  savedMovies,
+  saveMovie,
+  deleteMovie,
+  resultSearch,
+  filteredFavoriteMovies,
+  searchSavedMovies
+}) {
   const location = useLocation().pathname;
   
   const [widthWindow, setWidthWindow] = useState(window.innerWidth); // ширина экрана
   const [numberMoviesOnPage, setNumbersMoviesOnPage] = useState(null); // количество рендера фильмов
   const [numberMoviesAddedOnPage, setNumberMoviesAddedOnPage] = useState(null); // количество добавления фильмов
 
+  const resizeWindow = () => setWidthWindow(window.innerWidth);
+
   // обработчик изменения экрана
   useEffect(() => {
-    window.addEventListener('resize', () => {
-      setWidthWindow(window.innerWidth);
-    });
+    window.addEventListener('resize', resizeWindow);
+
+    return() => {
+      window.removeEventListener('resize', resizeWindow);
+    }; 
   }, []);
 
   // обработчик ручки переключения отображения фильмов
   useEffect(() => {
-    if (widthWindow >= 1240) {
-      setNumbersMoviesOnPage(12);
-      setNumberMoviesAddedOnPage(3);
-    } else if (widthWindow >= 768) {
-      setNumbersMoviesOnPage(8);
-      setNumberMoviesAddedOnPage(2);
+    if (widthWindow >= desktopWidth) {
+      setNumbersMoviesOnPage(moviesOnPage.desktop);
+      setNumberMoviesAddedOnPage(addMovieOnPage.desktop);
+    } else if (widthWindow >= tabWidth) {
+      setNumbersMoviesOnPage(moviesOnPage.tablet);
+      setNumberMoviesAddedOnPage(addMovieOnPage.tablet);
     } else {
-      setNumbersMoviesOnPage(5);
-      setNumberMoviesAddedOnPage(2);
+      setNumbersMoviesOnPage(moviesOnPage.mobile);
+      setNumberMoviesAddedOnPage(addMovieOnPage.mobile);
     } 
   }, [widthWindow]);
 
@@ -50,12 +63,25 @@ function MoviesCardList({ movies, savedMovies, saveMovie, deleteMovie }) {
   return (
     <section className="movies__list" aria-label="Секция с фильмами">
       <div className="movies__container">
-        { movies.length === 0
-          && 
+        {(resultSearch && !movies.length)
+          ?
           <h2 style={{textAlign: 'center', color: '#8D8D8D'}}>Ничего не найдено</h2>
+          : ''
         }
         <div className="movies__card-container">
           {
+            searchSavedMovies ? 
+            filteredFavoriteMovies.slice(0, numberMoviesOnPage).map((filmData) => (
+              <MoviesCard
+                key={filmData.id || filmData._id}
+                movie={filmData}
+                savedMoviesData={savedMovies}
+                saveMovie={saveMovie}
+                deleteMovie={deleteMovie}
+                toggleFavoriteDelete={handleOnToggleButtonFavorites}
+              />
+            ))
+            :
             movies.length > 0
             && movies.slice(0, numberMoviesOnPage).map((filmData) => (
                 <MoviesCard

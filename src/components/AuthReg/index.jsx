@@ -21,6 +21,7 @@ function AuthReg({title, handleSubmit, children, handleDisable}) {
               <button
                 className='authreg__button-submit'
                 disabled={handleDisable()}
+                type="submit"
               >
                 Зарегистрироваться
               </button>
@@ -28,6 +29,7 @@ function AuthReg({title, handleSubmit, children, handleDisable}) {
               <button
                 className='authreg__button-submit authreg__button-signin'
                 disabled={handleDisable()}
+                type="submit"
               >
                 Войти
               </button>
