@@ -6,14 +6,14 @@ const headers = {
 }
 
 export const mainApi = new MainApi({
-  baseUrl: 'https://api.movie.blyaderuiner.nomoredomains.rocks',
+  baseUrl: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 export const authApi = new AuthApi({
-  baseUrl: 'https://api.movie.blyaderuiner.nomoredomains.rocks',
+  baseUrl: 'http://localhost:3000',
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

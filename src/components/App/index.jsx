@@ -225,7 +225,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Main loggedIn={loggedIn} />} />
         <Route
-          path="/movies"
+          path={"/movies" || "/movies/"}
           element={
             <ProtectedRouteElement loggedIn={loggedIn}>
               <Movies
