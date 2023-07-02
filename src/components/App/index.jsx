@@ -17,6 +17,7 @@ import NotFound from "../NotFound";
 import Preloader from "../Preloader";
 
 import './App.css';
+import PopupWithInfo from "../PopupWithInfo";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false); // стейт входа
@@ -24,13 +25,16 @@ function App() {
   const [movies, setMovies] = useState([]); // cтейт фильмов
   const [foundMovies, setFoundMovies] = useState([]); // стейт найденых фильмов
   const [savedMoviesData, setSavedMoviesData] = useState([]); // стейт сохраненных фильмов
-  const [searchSavedMovies, setSearchSavedMovies] = useState(false);
   const [filteredFavoriteMovies, setFilteredFavoriteMovies] = useState([]); // стейт фильтра сохраненных фильмов
+  const [shortFoundMovies, setShortFoundMovies] = useState([]); // короткие фильмы
+  const [searchSavedMovies, setSearchSavedMovies] = useState(false);
   const [сheckbox, setCheckbox] = useState(false); // чекбокс поиска
   const [searchInputValue, setSearchInputValue] = useState(''); // инпут поиска
   const [resultSearch, setResultSearch] = useState(false);
   const [preloader, setPreloader] = useState(true); // прелоадер
   const [authRegError, setAuthRegError] = useState(false); // ошибка авторега
+  const [isPopupWithInfo, setPopupWithInfo] = useState(false); // попап с инфой
+  const [infoPopup, setInfoPopup] = useState(''); // попап инфа
 
   const navigate = useNavigate();
 
@@ -55,6 +59,17 @@ function App() {
     handleOnCheckToken();
   }, []);
 
+  // ручка получения юзера
+  const handleGetUser = () => {
+    setPreloader(true);
+    mainApi.getUserInfo()
+    .then((res) => {
+      setCurrentUser(res);
+    })
+    .catch((error) => console.log(error))
+    .finally(() => setPreloader(false));
+  };
+
   // ручка логина
   const handleLogin = ((email, password) => {
     setPreloader(true);
@@ -66,12 +81,16 @@ function App() {
       localStorage.setItem('token', 'true');
       setLoggedIn(true);
       navigate('/movies', {replace: true});
+      setInfoPopup('Добро Пожаловать!');
     })
     .catch((error) => {
       setAuthRegError(true);
       console.log(error);
     })
-    .finally(() => setPreloader(false));
+    .finally(() => {
+      setPreloader(false);
+      handleOpenPopup(true);
+    });
   });
 
   // ручка регистрации
@@ -88,17 +107,6 @@ function App() {
     .finally(() => {
       setPreloader(false);
     });
-  };
-
-  // ручка получения юзера
-  const handleGetUser = () => {
-    setPreloader(true);
-    mainApi.getUserInfo()
-    .then((res) => {
-      setCurrentUser(res);
-    })
-    .catch((error) => console.log(error))
-    .finally(() => setPreloader(false));
   };
 
   // ручка выхода
@@ -120,9 +128,19 @@ function App() {
   const handleUpdateUserInfo = (newInfo) => {
     setPreloader(true);
     mainApi.patchUserInfo(newInfo)
-      .then((res) => setCurrentUser(res))
-      .catch((error) => console.log(error))
-      .finally(() => setPreloader(false));
+      .then((res) => {
+        setCurrentUser(res)
+        setInfoPopup('Информация изменена');
+      })
+      .catch((error) => {
+        setInfoPopup('Что-то пошло не так, попробуйте снова');
+        console.log(error);
+        handleOpenPopup(true);
+      })
+      .finally(() => {
+        setPreloader(false);
+        handleOpenPopup(true);
+      });
   };
 
   // получение всех фильмов
@@ -150,6 +168,7 @@ function App() {
 
       // раскидываем по стейтам
       setFoundMovies(foundData.movies);
+      setShortFoundMovies(foundData.movies);
       setCheckbox(foundData.checkboxValue);
       setSearchInputValue(foundData.inputValue);
       setPreloader(false);
@@ -215,6 +234,17 @@ function App() {
       .catch((error) => console.log(error));
   };
 
+   // открытие модалки
+  function handleOpenPopup() {
+    setPopupWithInfo(true);
+  }
+
+  // закрытие модалки
+  function handleClosePopup() {
+    setPopupWithInfo(false);
+    setInfoPopup('');
+  }
+
   // отображение прилоадера
   if (preloader) {
     return <Preloader />;
@@ -230,6 +260,7 @@ function App() {
             <ProtectedRouteElement loggedIn={loggedIn}>
               <Movies
                 moviesData={movies}
+                shortFoundMovies={shortFoundMovies}
                 savedMoviesData={savedMoviesData}
                 foundMoviesData={foundMovies}
                 searchCheckboxValue={сheckbox}
@@ -238,6 +269,7 @@ function App() {
                 handleSearchInputValue={setSearchInputValue}
                 handleSearchCheckboxValue={setCheckbox}
                 handleDeleteMovie={handleSavedMovieDelete}
+                handleShortFoundMovies={setShortFoundMovies}
                 saveMovie={handleClickOnFavoritesMovies}
                 resultSearch={resultSearch}
                 setResultSearch={setResultSearch}
@@ -306,6 +338,11 @@ function App() {
           }
         />
       </Routes>
+      <PopupWithInfo
+        popupTitle={infoPopup}
+        isOpen={isPopupWithInfo}
+        onClose={handleClosePopup}
+      />
     </CurrentUserContext.Provider>
   );
 }

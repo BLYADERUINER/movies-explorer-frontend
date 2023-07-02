@@ -13,7 +13,7 @@ function MoviesCardList({
   deleteMovie,
   resultSearch,
   filteredFavoriteMovies,
-  searchSavedMovies
+  searchSavedMovies,
 }) {
   const location = useLocation().pathname;
   
@@ -63,7 +63,7 @@ function MoviesCardList({
   return (
     <section className="movies__list" aria-label="Секция с фильмами">
       <div className="movies__container">
-        {(resultSearch && !movies.length)
+        {((resultSearch && !movies.length))
           ?
           <h2 style={{textAlign: 'center', color: '#8D8D8D'}}>Ничего не найдено</h2>
           : ''
