@@ -17,6 +17,7 @@ function Movies({
   handleSearchInputValue,
   handleSearchCheckboxValue,
   handleShortFoundMovies,
+  handleOnCheckFoundMovies,
   handleDeleteMovie,
   resultSearch,
   setResultSearch,
@@ -35,6 +36,7 @@ function Movies({
         handleSearchCheckboxValue={handleSearchCheckboxValue}
         handleShortFoundMovies={handleShortFoundMovies}
         setResultSearch={setResultSearch}
+        handleOnCheckFoundMovies={handleOnCheckFoundMovies}
       />
       <MoviesCardList
         movies={foundMoviesData}

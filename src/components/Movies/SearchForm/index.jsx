@@ -17,11 +17,11 @@ function SearchForm({
   handleShortFoundMovies,
   setResultSearch,
   setSearchSavedMovies,
+  handleOnCheckFoundMovies
 }) {
   const location = useLocation().pathname;
   const searchValidation = useInput(inputValue, {isEmpty: true});
   const searchCheckboxRef = useRef(null);
-  // const [shortState, setShortState] = useState([]);
 
   // проверка валидации поиска
   const emptyValid = () => searchValidation.isDirty && searchValidation.isEmpty;
@@ -73,16 +73,17 @@ function SearchForm({
       return;
     }
     
-    handleShortFoundMovies(searchResult);
-
     // а также в локал
     localStorage.setItem('foundmovies', JSON.stringify({
       inputValue: searchValidation.value,
       checkboxValue: searchCheckboxRef.current.checked,
       movies: searchResult,
     }));
-  };
 
+    handleShortFoundMovies(searchResult);
+    handleOnCheckFoundMovies();
+  };
+  
   // переключатель чекбокса
   const toggleCheckbox = () => {
     handleSearchCheckboxValue(!checkboxValue);
@@ -97,8 +98,6 @@ function SearchForm({
       handleFoundMoviesData(shortFoundMovies);
     }
   }, [checkboxValue, searchValidation.value]);
-
-  console.log(searchValidation.value);
 
   return (
     <div className="search">

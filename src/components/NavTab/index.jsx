@@ -17,7 +17,7 @@ function NavTab({ logined }) {
 
   return (
     <div
-      className={`navigation ${location === '/' ? "navigation_pink" : ""}${
+      className={`navigation ${location === '/' ? "navigation_pink" : ""} ${
         isToggleBurgerButton ? "navigation_opened" : ""
       }`}
     >

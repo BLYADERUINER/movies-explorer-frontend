@@ -273,6 +273,7 @@ function App() {
                 saveMovie={handleClickOnFavoritesMovies}
                 resultSearch={resultSearch}
                 setResultSearch={setResultSearch}
+                handleOnCheckFoundMovies={handleOnCheckFoundMovies}
               />
             </ProtectedRouteElement>
           }
