@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import logo from "../../images/logo.svg";
 import iconProfile from "../../images/icon-profile.svg";
@@ -9,6 +9,7 @@ import "./BurgerMenu.css";
 
 function NavTab({ logined }) {
   const [isToggleBurgerButton, setToggleBurgerButton] = useState(false);
+  const location = useLocation().pathname;
 
   function handleToggleBurgerButton() {
     setToggleBurgerButton(!isToggleBurgerButton);
@@ -16,7 +17,7 @@ function NavTab({ logined }) {
 
   return (
     <div
-      className={`navigation ${!logined ? "navigation_pink" : ""}${
+      className={`navigation ${location === '/' ? "navigation_pink" : ""} ${
         isToggleBurgerButton ? "navigation_opened" : ""
       }`}
     >

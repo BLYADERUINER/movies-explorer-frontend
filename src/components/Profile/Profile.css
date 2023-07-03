@@ -49,9 +49,25 @@
   font-weight: 400;
   font-size: 11px;
   line-height: 13px;
-  text-align: right;
+  text-align: center;
   border: none;
   background-color: transparent;
+  outline-width: 1px;
+  outline-style: solid;
+  outline-color: red;
+  outline-offset: 5px;
+  border-radius: 6px;
+  transition: all .1s ease-in-out;
+}
+
+.profile__input:disabled {
+  text-align: right;
+  outline: none;
+  color: #000000;
+}
+
+.profile__input:focus {
+  outline-color: #2BE080;
 }
 
 .profile__links-container {
@@ -68,6 +84,16 @@
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;
+}
+
+.profile__link_red {
+  color: red;
+}
+
+.profile__link_disabled {
+  pointer-events: none;
+  color: #A0A0A0;
+  cursor: default;
 }
 
 @media screen and (max-width: 550px) {
